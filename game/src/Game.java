@@ -2,13 +2,19 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import GameObjects.GameObjects;
+import GameObjects.Player;
+
 public class Game extends Canvas implements Runnable {
     private boolean isRunning = false;
     private Thread thread;
+    private GameObjects gameObjects;
 
     public Game() {
         new Window(1024, 768, "Attack of Equations", this);
         this.start();
+        this.gameObjects = new GameObjects();
+        this.gameObjects.addObject(new Player(100, 100));
     }
 
     public synchronized void start() {
@@ -57,6 +63,7 @@ public class Game extends Canvas implements Runnable {
 
     // update game state
     private void tick() {
+        gameObjects.tick();
     }
 
     // render game state
@@ -68,7 +75,8 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        // draw here
+        
+        gameObjects.render(graphics);
 
         graphics.dispose();
         bufferStrategy.show();
