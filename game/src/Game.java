@@ -6,6 +6,7 @@ import GameObjects.GameObjects;
 import GameObjects.Player.Player;
 import Handlers.KeyInputHandler;
 import Interface.GameMap;
+import Interface.GameMenu;
 import Interface.PlayerLives;
 import Interface.PowerLevel;
 
@@ -20,13 +21,15 @@ public class Game extends Canvas implements Runnable {
     private PowerLevel powerLevel = new PowerLevel(gameMap);
     private PlayerLives playerLives = new PlayerLives(gameMap);
     private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
+    private GameMenu gameMenu;
 
     public Game() {
-        new Window(width, height, "Attack of Equations", this);
+        Window window = new Window(width, height, "Attack of Equations", this);
         this.start();
         this.addKeyListener(keyInputHandler);
         this.gameObjects = new GameObjects();
         this.gameObjects.addObject(player);
+        this.gameMenu = new GameMenu(window.getFrame());
     }
 
     public synchronized void start() {
@@ -92,6 +95,7 @@ public class Game extends Canvas implements Runnable {
         gameObjects.render(graphics);
         powerLevel.renderScore(graphics);
         playerLives.renderLives(graphics);
+        gameMenu.renderMenu(graphics);
 
         graphics.dispose();
         bufferStrategy.show();
