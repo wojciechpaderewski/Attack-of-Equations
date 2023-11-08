@@ -3,10 +3,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import GameObjects.GameObjects;
-import GameObjects.Player;
-import Graphics.GameMap;
+import GameObjects.Player.Player;
 import Handlers.KeyInputHandler;
-
+import Interface.GameMap;
+import Interface.PlayerLives;
+import Interface.PowerLevel;
 
 public class Game extends Canvas implements Runnable {
     static int width = 1024, height = 768;
@@ -16,13 +17,16 @@ public class Game extends Canvas implements Runnable {
     private GameObjects gameObjects;
     private KeyInputHandler keyInputHandler = new KeyInputHandler();
     private GameMap gameMap = new GameMap(width, height);
+    private PowerLevel powerLevel = new PowerLevel(gameMap);
+    private PlayerLives playerLives = new PlayerLives(gameMap);
+    private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
 
     public Game() {
         new Window(width, height, "Attack of Equations", this);
         this.start();
         this.addKeyListener(keyInputHandler);
         this.gameObjects = new GameObjects();
-        this.gameObjects.addObject(new Player(100, 100, keyInputHandler, gameMap));
+        this.gameObjects.addObject(player);
     }
 
     public synchronized void start() {
@@ -86,6 +90,8 @@ public class Game extends Canvas implements Runnable {
         
         gameMap.renderMap(graphics);
         gameObjects.render(graphics);
+        powerLevel.renderScore(graphics);
+        playerLives.renderLives(graphics);
 
         graphics.dispose();
         bufferStrategy.show();
