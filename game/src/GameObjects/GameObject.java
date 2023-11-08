@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import Shapes.Shape;
 
 public abstract class GameObject {
-    protected float velX = 0, velY = 0;
+    protected int velX = 0, velY = 0;
     protected Shape shape;
 
     public GameObject(Shape shape) {

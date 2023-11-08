@@ -4,17 +4,25 @@ import java.awt.image.BufferStrategy;
 
 import GameObjects.GameObjects;
 import GameObjects.Player;
+import Graphics.GameMap;
+import Handlers.KeyInputHandler;
+
 
 public class Game extends Canvas implements Runnable {
+    static int width = 1024, height = 768;
+
     private boolean isRunning = false;
     private Thread thread;
     private GameObjects gameObjects;
+    private KeyInputHandler keyInputHandler = new KeyInputHandler();
+    private GameMap gameMap = new GameMap(width, height);
 
     public Game() {
-        new Window(1024, 768, "Attack of Equations", this);
+        new Window(width, height, "Attack of Equations", this);
         this.start();
+        this.addKeyListener(keyInputHandler);
         this.gameObjects = new GameObjects();
-        this.gameObjects.addObject(new Player(100, 100));
+        this.gameObjects.addObject(new Player(100, 100, keyInputHandler, gameMap));
     }
 
     public synchronized void start() {
@@ -76,6 +84,7 @@ public class Game extends Canvas implements Runnable {
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
         
+        gameMap.renderMap(graphics);
         gameObjects.render(graphics);
 
         graphics.dispose();
