@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import Equations.Equation;
 import GameObjects.GameObject;
+import GameObjects.Enemies.Enemy;
 import Handlers.KeyInputHandler;
 import Interface.GameMap;
 import Interface.PlayerLives;
@@ -59,6 +61,18 @@ public class Player extends GameObject {
 
     public void onCollision(GameObject other) {
         System.err.println("Player collided with " + other.getClass().getName());
+        if (other instanceof Enemy) {
+            Enemy enemy = (Enemy) other;
+            Equation equation = enemy.getEquation();
+
+            if (equation.isResultLesserOrEqualThanPowerLevel()) {
+                System.out.println("Equation solved");
+                this.powerLevel.setCurrentPowerLevel(equation.getResult());
+            } else {
+                System.out.println("Equation not solved");
+                this.playerLives.decrementLives();
+            }
+        }
     }
 
     private void handlePlayerMove() {

@@ -1,9 +1,13 @@
 package GameObjects.Enemies;
+import Equations.Equation;
+import Equations.EquationGenerator;
 import GameObjects.GameObjects;
 import Interface.GameMap;
 import Interface.PowerLevel;
 
 public class EnemiesGenerator {
+
+    private EquationGenerator equationGenerator;
     private GameObjects gameObjects;
     private GameMap gameMap;
     private PowerLevel powerLevel;
@@ -16,6 +20,7 @@ public class EnemiesGenerator {
         this.gameObjects = gameObjects;
         this.gameMap = gameMap;
         this.powerLevel = powerLevel;
+        this.equationGenerator = new EquationGenerator(powerLevel);
     }
 
     private void changeEnemiesSpeed() {
@@ -30,8 +35,9 @@ public class EnemiesGenerator {
     }
 
     private void generateEnemy(int y) {
-        int x = gameMap.getWidth() - 100;
-        this.gameObjects.add(new Enemy(x, y));
+        int x = gameMap.getWidth() - 130;
+        Equation equation = this.equationGenerator.generateEquation();
+        this.gameObjects.add(new Enemy(x, y, equation));
         System.out.println("Enemy generated");
     }
 

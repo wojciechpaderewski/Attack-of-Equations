@@ -35,6 +35,8 @@ public class PlayerTexture implements Texture {
         graphics.setColor(Color.black);
         String powerLevelString = Integer.toString(powerLevel.getCurrentPowerLevel());
         graphics.setFont(graphics.getFont().deriveFont(20f));
-        graphics.drawString(powerLevelString, x + width / 2 - 5, y + height / 2 + 5);
+        int stringWidth = graphics.getFontMetrics().stringWidth(powerLevelString);
+        int stringHeight = graphics.getFontMetrics().getHeight();
+        graphics.drawString(powerLevelString, x + width / 2 - stringWidth / 2, y + height / 2 + stringHeight / 2);
     }
 }

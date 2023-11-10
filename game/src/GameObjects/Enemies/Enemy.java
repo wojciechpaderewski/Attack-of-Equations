@@ -1,16 +1,20 @@
 package GameObjects.Enemies;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import Equations.Equation;
 import GameObjects.GameObject;
 
 public class Enemy extends GameObject {
+    private Equation equation;
     private EnemyTexture texture;
     private Rectangle rect;
 
-    public Enemy(int x, int y) {
-        super(new Rectangle(x, y, 50, 50));
+    public Enemy(int x, int y, Equation equation) {
+        super(new Rectangle(x, y, 80, 80));
         this.rect = (Rectangle) this.shape;
-        this.texture = new EnemyTexture(rect);
+        this.texture = new EnemyTexture(rect, equation);
+        this.equation = equation;
     }
 
     public void setSpeed(int speed) {
@@ -29,4 +33,7 @@ public class Enemy extends GameObject {
     public void onCollision(GameObject other) {
     }
     
+    public Equation getEquation() {
+        return this.equation;
+    }
 }

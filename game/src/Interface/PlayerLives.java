@@ -16,7 +16,7 @@ public class PlayerLives {
     }
 
     public int getCurrentLives() { return currentLives; }
-    public void setCurrentLives(int lives) { this.currentLives = lives; }
+    public void decrementLives() { currentLives--; }
 
     public void renderLives(Graphics graphics) {
         int x = gameMap.getWidth() - 100;

@@ -54,6 +54,7 @@ public class EnemiesDestroyer {
                 Rectangle enemyRect = enemy.getShape();
                 Rectangle playerRect = player.getShape();
                 if (enemyRect.intersects(playerRect)) {
+                    player.onCollision(enemy);
                     gameObjects.remove(enemy);
                     System.out.println("Enemy destroyed");
                 }

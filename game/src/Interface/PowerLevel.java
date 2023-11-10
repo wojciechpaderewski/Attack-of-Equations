@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class PowerLevel {
-    private int powerLevelLimit = 100;
+    private int powerLevelLimit = 50;
     private int currentPowerLevel = this.powerLevelLimit;
     private GameMap gameMap;
 
