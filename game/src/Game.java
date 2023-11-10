@@ -1,14 +1,16 @@
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
 import GameObjects.GameObjects;
-import GameObjects.Player.Player;
+import GameObjects.Players.Player;
 import Handlers.KeyInputHandler;
 import Interface.GameMap;
 import Interface.GameMenu;
 import Interface.PlayerLives;
 import Interface.PowerLevel;
+import GameObjects.Enemies.EnemiesGenerator;
 
 public class Game extends Canvas implements Runnable {
     static int width = 1024, height = 768;
@@ -22,14 +24,16 @@ public class Game extends Canvas implements Runnable {
     private PlayerLives playerLives = new PlayerLives(gameMap);
     private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
     private GameMenu gameMenu;
+    private EnemiesGenerator enemiesGenerator;
 
     public Game() {
         Window window = new Window(width, height, "Attack of Equations", this);
         this.start();
         this.addKeyListener(keyInputHandler);
         this.gameObjects = new GameObjects();
-        this.gameObjects.addObject(player);
+        this.gameObjects.add(player);
         this.gameMenu = new GameMenu(window.getFrame());
+        this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap);
     }
 
     public synchronized void start() {
@@ -79,6 +83,7 @@ public class Game extends Canvas implements Runnable {
     // update game state
     private void tick() {
         gameObjects.tick();
+        enemiesGenerator.tick();
     }
 
     // render game state
@@ -99,6 +104,9 @@ public class Game extends Canvas implements Runnable {
 
         graphics.dispose();
         bufferStrategy.show();
+
+        // fixes lags on linux systems
+        Toolkit.getDefaultToolkit().sync();
     }
 
     public static void main(String[] args) throws Exception {

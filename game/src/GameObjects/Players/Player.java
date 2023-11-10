@@ -1,4 +1,4 @@
-package GameObjects.Player;
+package GameObjects.Players;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -54,6 +54,10 @@ public class Player extends GameObject {
         int width = (int) rect.getWidth();
         int height = (int) rect.getHeight();
         return x < 0 || x > mapWidth - 1.5 * width || y < 0 || y > mapHeight - 2 * height;
+    }
+
+    public void onCollision(GameObject other) {
+        System.err.println("Player collided with " + other.getClass().getName());
     }
 
     private void handlePlayerMove() {

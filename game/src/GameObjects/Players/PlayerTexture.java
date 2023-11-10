@@ -1,4 +1,4 @@
-package GameObjects.Player;
+package GameObjects.Players;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,10 +8,11 @@ import GameObjects.Texture;
 import Interface.PowerLevel;
 
 
-public class PlayerTexture extends Texture {
+public class PlayerTexture implements Texture {
     private Rectangle rect;
     private PowerLevel powerLevel;
     private int width, height;
+    private Color color;
 
     public PlayerTexture(Rectangle rect, PowerLevel powerLevel) {
         this.rect = rect;

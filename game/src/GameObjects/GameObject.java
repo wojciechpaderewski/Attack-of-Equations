@@ -18,4 +18,6 @@ public abstract class GameObject {
     public Shape getShape() {
         return shape;
     }
+
+    public abstract void onCollision(GameObject other);
 }
