@@ -1,9 +1,24 @@
 package Equations;
 
+import java.util.LinkedList;
+
 import Interface.PowerLevel;
 
 public class EquationGenerator {
     PowerLevel powerLevel;
+
+    LinkedList<Equation> equations = new LinkedList<Equation>();
+
+    double percentOfAddition = 0.25;
+    double percentOfSubtraction = 0.25;
+    double percentOfMultiplication = 0.25;
+    double percentOfDivision = 0.25;
+
+    double percentOf2Numbers = 0.5;
+    double percentOf3Numbers = 0.5;
+
+    double percentOfEquationUnderPowerLevel = 0.5;
+    double percentOfEquationOverPowerLevel = 0.5;
 
     public EquationGenerator(PowerLevel powerLevel) {
         this.powerLevel = powerLevel;

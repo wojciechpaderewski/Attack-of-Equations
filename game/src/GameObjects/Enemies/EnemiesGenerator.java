@@ -6,12 +6,12 @@ import Interface.GameMap;
 import Interface.PowerLevel;
 
 public class EnemiesGenerator {
-
     private EquationGenerator equationGenerator;
     private GameObjects gameObjects;
     private GameMap gameMap;
     private PowerLevel powerLevel;
     private int enemiesLimit = 10;
+    private int maxSpeed = 7;
 
     private int enemySpawnRate = 100;
     private int ticks = 0;
@@ -24,14 +24,22 @@ public class EnemiesGenerator {
     }
 
     private void changeEnemiesSpeed() {
-        int powerLevel = this.powerLevel.getCurrentPowerLevel();
-        int speed = 1 + powerLevel / 10;
+
         gameObjects.getGameObjects().forEach((gameObject) -> {
             if (gameObject instanceof Enemy) {
                 Enemy enemy = (Enemy) gameObject;
-                enemy.setSpeed(-speed);
+                enemy.setSpeed(calcSpeed());
             }
         });
+    }
+
+    private int calcSpeed() {
+        int powerLevel = this.powerLevel.getCurrentPowerLevel();
+        int speed = 2 + (int) powerLevel / 20;
+        if (speed > maxSpeed) {
+            speed = maxSpeed;
+        }
+        return -speed;
     }
 
     private void generateEnemy(int y) {
@@ -39,6 +47,7 @@ public class EnemiesGenerator {
         Equation equation = this.equationGenerator.generateEquation();
         this.gameObjects.add(new Enemy(x, y, equation));
         System.out.println("Enemy generated");
+        System.out.println("CurrentSpeed: " + calcSpeed());
     }
 
     private void generateEnemies() {
