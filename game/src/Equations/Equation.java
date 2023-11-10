@@ -1,6 +1,6 @@
 package Equations;
 
-import Interface.PowerLevel;
+import ui.PowerLevel;
 
 public class Equation {
     PowerLevel powerLevel;

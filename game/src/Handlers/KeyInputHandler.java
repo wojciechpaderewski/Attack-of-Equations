@@ -2,7 +2,6 @@ package Handlers;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
 public class KeyInputHandler extends KeyAdapter {
     // create map of keys
     private boolean[] keys = new boolean[256];

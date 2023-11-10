@@ -8,9 +8,9 @@ import Equations.Equation;
 import GameObjects.GameObject;
 import GameObjects.Enemies.Enemy;
 import Handlers.KeyInputHandler;
-import Interface.GameMap;
-import Interface.PlayerLives;
-import Interface.PowerLevel;
+import ui.GameMap;
+import ui.PlayerLives;
+import ui.PowerLevel;
 
 
 public class Player extends GameObject {

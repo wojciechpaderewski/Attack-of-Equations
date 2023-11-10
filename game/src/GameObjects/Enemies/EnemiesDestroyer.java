@@ -5,8 +5,8 @@ import java.awt.Rectangle;
 import GameObjects.GameObject;
 import GameObjects.GameObjects;
 import GameObjects.Players.Player;
-import Interface.GameMap;
-import Interface.PowerLevel;
+import ui.GameMap;
+import ui.PowerLevel;
 
 public class EnemiesDestroyer {
     private GameObjects gameObjects;

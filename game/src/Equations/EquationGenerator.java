@@ -2,7 +2,7 @@ package Equations;
 
 import java.util.LinkedList;
 
-import Interface.PowerLevel;
+import ui.PowerLevel;
 
 public class EquationGenerator {
     PowerLevel powerLevel;

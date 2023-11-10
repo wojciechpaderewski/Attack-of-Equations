@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import GameObjects.Texture;
-import Interface.PowerLevel;
+import ui.PowerLevel;
 
 
 public class PlayerTexture implements Texture {

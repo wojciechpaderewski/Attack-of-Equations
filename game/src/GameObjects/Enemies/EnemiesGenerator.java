@@ -2,8 +2,8 @@ package GameObjects.Enemies;
 import Equations.Equation;
 import Equations.EquationGenerator;
 import GameObjects.GameObjects;
-import Interface.GameMap;
-import Interface.PowerLevel;
+import ui.GameMap;
+import ui.PowerLevel;
 
 public class EnemiesGenerator {
     private EquationGenerator equationGenerator;

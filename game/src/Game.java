@@ -6,20 +6,24 @@ import java.awt.image.BufferStrategy;
 import GameObjects.GameObjects;
 import GameObjects.Players.Player;
 import Handlers.KeyInputHandler;
-import Interface.GameMap;
-import Interface.GameMenu;
-import Interface.PlayerLives;
-import Interface.PowerLevel;
+import Handlers.MouseHandler;
+import States.GameState;
+import ui.GameMap;
+import ui.GameMenu;
+import ui.PlayerLives;
+import ui.PowerLevel;
 import GameObjects.Enemies.EnemiesDestroyer;
 import GameObjects.Enemies.EnemiesGenerator;
 
 public class Game extends Canvas implements Runnable {
     static int width = 1024, height = 768;
-
-    private boolean isRunning = false;
+    private GameState state = GameState.MENU;
     private Thread thread;
-    private GameObjects gameObjects;
+
     private KeyInputHandler keyInputHandler = new KeyInputHandler();
+    private MouseHandler mouseHandler = new MouseHandler();
+
+    private GameObjects gameObjects;
     private GameMap gameMap = new GameMap(width, height);
     private PowerLevel powerLevel = new PowerLevel(gameMap);
     private PlayerLives playerLives = new PlayerLives(gameMap);
@@ -32,23 +36,46 @@ public class Game extends Canvas implements Runnable {
         Window window = new Window(width, height, "Attack of Equations", this);
         this.start();
         this.addKeyListener(keyInputHandler);
+        this.addMouseListener(mouseHandler);
+
         this.gameObjects = new GameObjects();
         this.gameObjects.add(player);
-        this.gameMenu = new GameMenu(window.getFrame());
+        this.gameMenu = new GameMenu(window.getFrame(),state, mouseHandler);
         this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
         this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
+
+        initEvents();
+    }
+
+    private void initEvents() {
+        gameMenu.onStopGame = (Void) -> {
+            stop();
+            return null;
+        };
+        gameMenu.onStartGame = (Void) -> {
+            start();
+            return null;
+        };
+        gameMenu.onResumeGame = (Void) -> {
+            start();
+            return null;
+        };
     }
 
     public synchronized void start() {
-        if (isRunning) return;
-        isRunning = true;
+        if (state == GameState.GAME) {
+            return;
+        }
+        state = GameState.GAME;
         thread = new Thread(this);
         thread.start();
     }
 
     public synchronized void stop() {
-        if (!isRunning) return;
-        isRunning = false;
+        if (state == GameState.MENU) {
+            return;
+        }
+        state = GameState.MENU;
         try {
             thread.join();
         } catch (InterruptedException e) {
@@ -64,7 +91,7 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
-        while (isRunning) {
+        while (state == GameState.GAME) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns; // time passed divided by time per tick
             lastTime = now;
@@ -72,7 +99,7 @@ public class Game extends Canvas implements Runnable {
                 tick();
                 delta--;
             }
-            if (isRunning) render();
+            render();
             frames++;
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
@@ -104,7 +131,7 @@ public class Game extends Canvas implements Runnable {
         gameObjects.render(graphics);
         powerLevel.renderScore(graphics);
         playerLives.renderLives(graphics);
-        gameMenu.renderMenu(graphics);
+        gameMenu.render(graphics);
 
         graphics.dispose();
         bufferStrategy.show();
