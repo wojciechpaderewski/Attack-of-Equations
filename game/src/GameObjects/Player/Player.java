@@ -1,6 +1,7 @@
 package GameObjects.Player;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import GameObjects.GameObject;
@@ -8,13 +9,13 @@ import Handlers.KeyInputHandler;
 import Interface.GameMap;
 import Interface.PlayerLives;
 import Interface.PowerLevel;
-import Shapes.Rect;
+
 
 public class Player extends GameObject {
     static int startX = 0, startY = 0;
     private KeyInputHandler keyInputHandler;
     private GameMap gameMap;
-    private static Rect rect = new Rect(startX, startY, 40, 40);
+    private static Rectangle rect = new Rectangle(startX, startY, 50, 50);
     private PlayerLives playerLives;
     private PowerLevel powerLevel;
     private PlayerTexture texture;
@@ -29,12 +30,12 @@ public class Player extends GameObject {
     }
 
     public void tick() {
-        rect.setY(rect.getY() + this.velY);
-        rect.setX(rect.getX() + this.velX);
+        rect.x += this.velX;
+        rect.y += this.velY;
 
         if (isOutOfMapBounds()) {
-            rect.setY(rect.getY() - this.velY);
-            rect.setX(rect.getX() - this.velX);
+            rect.x -= this.velX;
+            rect.y -= this.velY;
         }
 
         handlePlayerMove();
@@ -46,12 +47,12 @@ public class Player extends GameObject {
     }
 
     private boolean isOutOfMapBounds() {
-        int x = rect.getX();
-        int y = rect.getY();
+        int x = rect.x;
+        int y = rect.y;
         int mapWidth = gameMap.getWidth();
         int mapHeight = gameMap.getHeight();
-        int width = rect.getWidth();
-        int height = rect.getHeight();
+        int width = (int) rect.getWidth();
+        int height = (int) rect.getHeight();
         return x < 0 || x > mapWidth - 1.5 * width || y < 0 || y > mapHeight - 2 * height;
     }
 

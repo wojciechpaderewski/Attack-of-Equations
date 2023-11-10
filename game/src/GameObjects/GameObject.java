@@ -1,9 +1,10 @@
 package GameObjects;
 
 import java.awt.Graphics;
-import Shapes.Shape;
+import java.awt.Shape;
 
 public abstract class GameObject {
+    protected int x, y;
     protected int velX = 0, velY = 0;
     protected Shape shape;
 
@@ -13,7 +14,8 @@ public abstract class GameObject {
 
     public abstract void tick();
     public abstract void render(Graphics graphics);
-    public boolean isInBounds(int x, int y) {
-        return shape.isInBounds(x, y);
+
+    public Shape getShape() {
+        return shape;
     }
 }
