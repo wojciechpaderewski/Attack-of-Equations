@@ -15,8 +15,8 @@ public abstract class GameObject {
     public abstract void tick();
     public abstract void render(Graphics graphics);
 
-    public Shape getShape() {
-        return shape;
+    public <T extends Shape> T getShape() {
+        return (T) this.shape;
     }
 
     public abstract void onCollision(GameObject other);

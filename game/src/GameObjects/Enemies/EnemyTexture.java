@@ -12,7 +12,7 @@ public class EnemyTexture implements Texture {
 
     EnemyTexture(Rectangle rect) {
         this.rect = rect;
-        this.color = Color.white;
+        this.color = Color.GREEN;
         this.width = (int) rect.getWidth();
         this.height = (int) rect.getHeight();
     }

@@ -10,6 +10,7 @@ import Interface.GameMap;
 import Interface.GameMenu;
 import Interface.PlayerLives;
 import Interface.PowerLevel;
+import GameObjects.Enemies.EnemiesDestroyer;
 import GameObjects.Enemies.EnemiesGenerator;
 
 public class Game extends Canvas implements Runnable {
@@ -25,6 +26,7 @@ public class Game extends Canvas implements Runnable {
     private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
     private GameMenu gameMenu;
     private EnemiesGenerator enemiesGenerator;
+    private EnemiesDestroyer enemiesDestroyer;
 
     public Game() {
         Window window = new Window(width, height, "Attack of Equations", this);
@@ -33,7 +35,8 @@ public class Game extends Canvas implements Runnable {
         this.gameObjects = new GameObjects();
         this.gameObjects.add(player);
         this.gameMenu = new GameMenu(window.getFrame());
-        this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap);
+        this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
+        this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
     }
 
     public synchronized void start() {
@@ -84,6 +87,7 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         gameObjects.tick();
         enemiesGenerator.tick();
+        enemiesDestroyer.tick();
     }
 
     // render game state

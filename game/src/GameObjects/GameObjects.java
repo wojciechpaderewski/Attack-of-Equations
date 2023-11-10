@@ -11,8 +11,12 @@ public class GameObjects {
         gameObjects.add(object);
     }
 
-    public void removeObject(GameObject object) {
+    public void remove(GameObject object) {
         gameObjects.remove(object);
+    }
+
+    public LinkedList<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
     public void tick() {
@@ -29,5 +33,15 @@ public class GameObjects {
             GameObject tempObject = gameObjects.get(i);
             tempObject.render(graphics);
         }
+    }
+
+    public <T extends GameObject> T get(Class<T> type) {
+        for (int i = 0; i < gameObjects.size(); i++) {
+            GameObject tempObject = gameObjects.get(i);
+            if (type.isInstance(tempObject)) {
+                return type.cast(tempObject);
+            }
+        }
+        return null;
     }
 }

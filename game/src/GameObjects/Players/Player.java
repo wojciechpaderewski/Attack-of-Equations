@@ -19,6 +19,7 @@ public class Player extends GameObject {
     private PlayerLives playerLives;
     private PowerLevel powerLevel;
     private PlayerTexture texture;
+    private int playerSpeed = 7;
 
     public Player( KeyInputHandler keyInputHandler, GameMap gameMap, PlayerLives playerLives, PowerLevel powerLevel) {
         super(rect);
@@ -62,25 +63,25 @@ public class Player extends GameObject {
 
     private void handlePlayerMove() {
         if(this.keyInputHandler.isKeyPressed(KeyEvent.VK_W)) {
-            this.velY = -5;
+            this.velY = -this.playerSpeed;
         } else if (!this.keyInputHandler.isKeyPressed(KeyEvent.VK_S)) {
             this.velY = 0;
         } 
 
         if(this.keyInputHandler.isKeyPressed(KeyEvent.VK_S)) {
-            this.velY = 5;
+            this.velY = this.playerSpeed;
         } else if (!this.keyInputHandler.isKeyPressed(KeyEvent.VK_W)) {
             this.velY = 0;
         }
 
         if(this.keyInputHandler.isKeyPressed(KeyEvent.VK_A)) {
-            this.velX = -5;
+            this.velX = -this.playerSpeed;
         } else if (!this.keyInputHandler.isKeyPressed(KeyEvent.VK_D)) {
             this.velX = 0;
         }
 
         if(this.keyInputHandler.isKeyPressed(KeyEvent.VK_D)) {
-            this.velX = 5;
+            this.velX = this.playerSpeed;
         } else if (!this.keyInputHandler.isKeyPressed(KeyEvent.VK_A)) {
             this.velX = 0;
         }
