@@ -7,7 +7,8 @@ import GameObjects.GameObjects;
 import GameObjects.Players.Player;
 import Handlers.KeyInputHandler;
 import Handlers.MouseHandler;
-import States.GameState;
+import States.GameStates;
+import States.State;
 import ui.GameMap;
 import ui.GameMenu;
 import ui.PlayerLives;
@@ -17,7 +18,7 @@ import GameObjects.Enemies.EnemiesGenerator;
 
 public class Game extends Canvas implements Runnable {
     static int width = 1024, height = 768;
-    private GameState state = GameState.MENU;
+    private State state = new State(GameStates.GAME);
     private Thread thread;
 
     private KeyInputHandler keyInputHandler = new KeyInputHandler();
@@ -34,13 +35,16 @@ public class Game extends Canvas implements Runnable {
 
     public Game() {
         Window window = new Window(width, height, "Attack of Equations", this);
+        thread = new Thread(this);
+        thread.start();
+
         this.start();
         this.addKeyListener(keyInputHandler);
         this.addMouseListener(mouseHandler);
 
         this.gameObjects = new GameObjects();
         this.gameObjects.add(player);
-        this.gameMenu = new GameMenu(gameMap, mouseHandler);
+        this.gameMenu = new GameMenu(gameMap, mouseHandler, state);
         this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
         this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
 
@@ -48,12 +52,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void initEvents() {
-        gameMenu.onStopGame = (Void) -> {
-            stop();
-            return null;
-        };
-        gameMenu.onStartGame = (Void) -> {
-            start();
+        gameMenu.onQuitGame = (Void) -> {
+            System.exit(0);
             return null;
         };
         gameMenu.onResumeGame = (Void) -> {
@@ -63,24 +63,13 @@ public class Game extends Canvas implements Runnable {
     }
 
     public synchronized void start() {
-        if (state == GameState.GAME) {
-            return;
-        }
-        state = GameState.GAME;
-        thread = new Thread(this);
-        thread.start();
+        System.out.println("Starting game");
+        state.setCurrentState(GameStates.GAME);
+
     }
 
     public synchronized void stop() {
-        if (state == GameState.MENU) {
-            return;
-        }
-        state = GameState.MENU;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        state.setCurrentState(GameStates.MENU);
     }
 
     public void run() {
@@ -91,12 +80,14 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
-        while (state == GameState.GAME) {
+        while (true) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns; // time passed divided by time per tick
             lastTime = now;
             while (delta >= 1) {
-                tick();
+                if (state.getCurrentState() != GameStates.MENU) {
+                    tick();
+                }
                 delta--;
             }
             render();
@@ -107,7 +98,6 @@ public class Game extends Canvas implements Runnable {
                 frames = 0;
             }
         }
-        stop();
     }
 
     // update game state
@@ -126,16 +116,19 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        
-        gameMap.renderMap(graphics);
-        gameObjects.render(graphics);
-        powerLevel.renderScore(graphics);
-        playerLives.renderLives(graphics);
-        gameMenu.render(graphics);
+        if (state.getCurrentState() == GameStates.GAME) {
+            gameMap.renderMap(graphics);
+            gameObjects.render(graphics);
+            powerLevel.renderScore(graphics);
+            playerLives.renderLives(graphics);
+            gameMenu.renderShowMenuButton(graphics);
+        } else {
+            gameMenu.render(graphics);
+        }
 
         graphics.dispose();
         bufferStrategy.show();
-
+        
         // fixes lags on linux systems
         Toolkit.getDefaultToolkit().sync();
     }

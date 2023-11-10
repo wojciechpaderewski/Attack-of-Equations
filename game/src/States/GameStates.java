@@ -1,6 +1,6 @@
 package States;
 
-public enum GameState {
+public enum GameStates {
     MENU,
     GAME,
     GAME_OVER

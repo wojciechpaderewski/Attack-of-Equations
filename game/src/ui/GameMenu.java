@@ -5,44 +5,53 @@ import java.awt.Graphics;
 import java.util.function.Function;
 
 import Handlers.MouseHandler;
+import States.GameStates;
+import States.State;
 
 public class GameMenu {
     static int width = 300;
-    static int height = 600;
+    static int height = 280;
     static Color backgroundColor = Color.gray;
 
+    GameMap gameMap;
     MouseHandler mouseHandler;
-    private Button stopButton;
-    private Button startButton;
-    private Button resumeButton;
+    State state;
 
-    public GameMenu(GameMap gameMap, MouseHandler mouseHandler) {
+    private Button quitButton;
+    private Button resumeButton;
+    private Button showMenuButton;
+
+    public GameMenu(GameMap gameMap, MouseHandler mouseHandler, State state) {
         this.mouseHandler = mouseHandler;
-        initStopButton();       
-        initStartButton();
-        initResumeButton(); 
+        this.gameMap = gameMap;
+        this.state = state;
+        initQuitButton();
+        initResumeButton();
+        initShowMenuButton();
     }
 
-    private void initStopButton() {
-        stopButton = new Button(mouseHandler);
-        stopButton.text = "Stop";
-        stopButton.x = width / 2 - stopButton.width / 2;
-        stopButton.y = 100;
+    private void initShowMenuButton() {
+        showMenuButton = new Button(mouseHandler);
+        showMenuButton.text = "Menu";
+        showMenuButton.x = gameMap.getWidth() - showMenuButton.width - 50;
+        showMenuButton.y = gameMap.getHeight() - showMenuButton.height - 50;
 
-        stopButton.onClick = (Void) -> {
-            onStopGame.apply(null);
+        showMenuButton.onClick = (Void) -> {
+            state.setCurrentState(GameStates.MENU);
             return null;
         };
     }
 
-    private void initStartButton() {
-        startButton = new Button(mouseHandler);
-        startButton.text = "Start";
-        startButton.x = width / 2 - startButton.width / 2;
-        startButton.y = 300;
-
-        startButton.onClick = (Void) -> {
-            onStartGame.apply(null);
+    private void initQuitButton() {
+        quitButton = new Button(mouseHandler);
+        quitButton.text = "Quit";
+        quitButton.x = gameMap.getWidth() / 2 - quitButton.width / 2;
+        quitButton.y = 300;
+        quitButton.onClick = (Void) -> {
+             if(state.getCurrentState() != GameStates.MENU) {
+                return null;
+            }
+            onQuitGame.apply(null);
             return null;
         };
     }
@@ -50,28 +59,40 @@ public class GameMenu {
     private void initResumeButton() {
         resumeButton = new Button(mouseHandler);
         resumeButton.text = "Resume";
-        resumeButton.x = width / 2 - resumeButton.width / 2;
-        resumeButton.y = 500;
+        resumeButton.x = gameMap.getWidth() / 2 - resumeButton.width / 2;
+        resumeButton.y = 420;
 
         resumeButton.onClick = (Void) -> {
+             if(state.getCurrentState() != GameStates.MENU) {
+                return null;
+            }
             onResumeGame.apply(null);
             return null;
         };
     }
 
-    public Function<Void, Void> onStopGame;
-    public Function<Void, Void> onStartGame;
+    public Function<Void, Void> onQuitGame;
     public Function<Void, Void> onResumeGame;
 
     private void renderBackground(Graphics graphics) {
         graphics.setColor(backgroundColor);
-        graphics.fillRect(0, 0, width, height);
+        // draw background on map center
+        int mapWidth = gameMap.getWidth();
+        int mapHeight = gameMap.getHeight();
+
+        int x = mapWidth / 2 - width / 2;
+        int y = mapHeight / 2 - height / 2;
+
+        graphics.fillRect(x, y, width, height);
     }
 
     public void render(Graphics graphics) {
         renderBackground(graphics);
-        stopButton.render(graphics);
-        startButton.render(graphics);
+        quitButton.render(graphics);
         resumeButton.render(graphics);
+    }
+
+    public void renderShowMenuButton(Graphics graphics) {
+        showMenuButton.render(graphics);
     }
 }

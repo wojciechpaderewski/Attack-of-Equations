@@ -9,11 +9,11 @@ import Handlers.MouseHandler;
 
 public class Button {
     public String text = "Button";
-    public int x = 0, y = 0, width = 100, height =20;
+    public int x = 0, y = 0, width = 100, height = 45;
 
     public Color buttonColor = Color.white;
     public Color textColor = Color.black;
-    public Color bordeColor = Color.black;
+    public Color borderColor = Color.black;
 
     Function<Void, Void> onClick;
 
@@ -37,11 +37,11 @@ public class Button {
         graphics.setColor(buttonColor);
         graphics.fillRect(x, y, width, height);
 
-        graphics.setColor(bordeColor);
+        graphics.setColor(borderColor);
         graphics.drawRect(x, y, width, height);
 
         graphics.setColor(textColor);
-        graphics.drawString(text, x + width / 2 - graphics.getFontMetrics().stringWidth(text) / 2, y + height / 2 + graphics.getFontMetrics().getHeight() / 2);
+        graphics.drawString(text, x + width / 2 - graphics.getFontMetrics().stringWidth(text) / 2, y + height / 2 + graphics.getFontMetrics().getHeight() / 3);
     }
 
 }
