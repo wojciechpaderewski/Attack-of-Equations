@@ -40,7 +40,7 @@ public class Game extends Canvas implements Runnable {
 
         this.gameObjects = new GameObjects();
         this.gameObjects.add(player);
-        this.gameMenu = new GameMenu(window.getFrame(),state, mouseHandler);
+        this.gameMenu = new GameMenu(gameMap, mouseHandler);
         this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
         this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
 
