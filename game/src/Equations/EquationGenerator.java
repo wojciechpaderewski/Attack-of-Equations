@@ -9,9 +9,9 @@ public class EquationGenerator {
 
     LinkedList<Equation> equations = new LinkedList<Equation>();
 
-    double percentOfAddition = 0.35;
+    double percentOfAddition = 0.30;
     double percentOfSubtraction = 0.15;
-    double percentOfMultiplication = 0.2;
+    double percentOfMultiplication = 0.25;
     double percentOfDivision = 0.1;
 
     double percentOf2Numbers = 0.7;
@@ -20,7 +20,7 @@ public class EquationGenerator {
     double percentOfEquationUnderPowerLevel = 0.25;
     double percentOfEquationOverPowerLevel = 0.75;
 
-    double randomNumberDivider = 0.5;
+    double randomNumberDivider = 0.3;
 
     public EquationGenerator(PowerLevel powerLevel) {
         this.powerLevel = powerLevel;

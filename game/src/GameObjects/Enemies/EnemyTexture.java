@@ -11,7 +11,6 @@ public class EnemyTexture implements Texture {
     private int width, height;
     private Color color;
     private Equation equation;
-    private int longestEquationLength = 5;
 
     EnemyTexture(Rectangle rect, Equation equation) {
         this.rect = rect;
@@ -33,22 +32,10 @@ public class EnemyTexture implements Texture {
 
         graphics.setColor(Color.black);
         String equationString = equation.getEquationToRender();
-        if (equationString.length() > this.longestEquationLength) {
-            equationString = wrapToLongEquation(equationString);
-        }
 
         graphics.setFont(graphics.getFont().deriveFont(15f));
-        System.out.println(equationString);
         int stringWidth = graphics.getFontMetrics().stringWidth(equationString);
         int stringHeight = graphics.getFontMetrics().getHeight();
-        graphics.drawString(equationString, x + width / 2 - stringWidth / 2, y + height / 2 + stringHeight / 2);
-        
-    }
-
-    private  String wrapToLongEquation(String equation) {
-        if (equation.length() > this.longestEquationLength) {
-            return equation.substring(0, this.longestEquationLength) + "\n" + equation.substring(this.longestEquationLength);
-        }
-        return equation;
+        graphics.drawString(equationString, x + width / 2 - stringWidth / 2, y + height / 2 + stringHeight / 3);
     }
 }

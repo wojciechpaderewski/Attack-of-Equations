@@ -42,7 +42,7 @@ public class EnemiesGenerator {
     }
 
     private void generateEnemy(int y) {
-        int x = gameMap.getWidth() - 50 - Enemy.width;
+        int x = gameMap.getWidth() - 70 - Enemy.width;
         Equation equation = this.equationGenerator.generateEquation();
         this.gameObjects.add(new Enemy(x, y, equation));
         System.out.println("Enemy generated");

@@ -6,8 +6,8 @@ import Equations.Equation;
 import GameObjects.GameObject;
 
 public class Enemy extends GameObject {
-    static int width = 90;
-    static int height = 90;
+    static int width = 130;
+    static int height = 55;
     private Equation equation;
     private EnemyTexture texture;
     private Rectangle rect;
