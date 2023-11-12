@@ -24,7 +24,6 @@ public class EnemiesGenerator {
     }
 
     private void changeEnemiesSpeed() {
-
         gameObjects.getGameObjects().forEach((gameObject) -> {
             if (gameObject instanceof Enemy) {
                 Enemy enemy = (Enemy) gameObject;
@@ -43,7 +42,7 @@ public class EnemiesGenerator {
     }
 
     private void generateEnemy(int y) {
-        int x = gameMap.getWidth() - 130;
+        int x = gameMap.getWidth() - 50 - Enemy.width;
         Equation equation = this.equationGenerator.generateEquation();
         this.gameObjects.add(new Enemy(x, y, equation));
         System.out.println("Enemy generated");
