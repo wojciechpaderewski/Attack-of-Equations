@@ -3,6 +3,9 @@ package ui;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import States.GameStates;
+import States.State;
+
 public class PlayerLives {
     private int maxLives = 3;
     private int currentLives = maxLives;
@@ -10,9 +13,11 @@ public class PlayerLives {
     private int heartWidth = 20;
     private int heartHeight = 20;
     private GameMap gameMap;
+    private State state;
 
-    public PlayerLives(GameMap gameMap) {
+    public PlayerLives(GameMap gameMap, State state) {
         this.gameMap = gameMap;
+        this.state = state;
     }
 
     public int getCurrentLives() { return currentLives; }
@@ -26,6 +31,16 @@ public class PlayerLives {
         for (int i = 0; i < currentLives; i++) {
             drawHeart(graphics, x, y);
             x += heartWidth + padding;
+        }
+    }
+
+    private boolean isGameOver () {
+        return currentLives == 0;
+    }
+
+    public void tick () {
+        if (isGameOver()) {
+            state.setCurrentState(GameStates.GAME_OVER);
         }
     }
 
