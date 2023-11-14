@@ -13,12 +13,14 @@ import ui.GameMap;
 import ui.GameMenu;
 import ui.PlayerLives;
 import ui.PowerLevel;
+import ui.StartView;
 import GameObjects.Enemies.EnemiesDestroyer;
 import GameObjects.Enemies.EnemiesGenerator;
 
+
 public class Game extends Canvas implements Runnable {
     static int width = 1024, height = 768;
-    private State state = new State(GameStates.GAME);
+    private State state = new State(GameStates.START);
     private Thread thread;
 
     private KeyInputHandler keyInputHandler = new KeyInputHandler();
@@ -30,6 +32,7 @@ public class Game extends Canvas implements Runnable {
     private PlayerLives playerLives = new PlayerLives(gameMap);
     private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
     private GameMenu gameMenu;
+    private StartView startView;
     private EnemiesGenerator enemiesGenerator;
     private EnemiesDestroyer enemiesDestroyer;
 
@@ -38,13 +41,13 @@ public class Game extends Canvas implements Runnable {
         thread = new Thread(this);
         thread.start();
 
-        this.start();
         this.addKeyListener(keyInputHandler);
         this.addMouseListener(mouseHandler);
 
         this.gameObjects = new GameObjects();
         this.gameObjects.add(player);
         this.gameMenu = new GameMenu(gameMap, mouseHandler, state);
+        this.startView = new StartView(gameMap, mouseHandler, state);
         this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
         this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
 
@@ -56,7 +59,18 @@ public class Game extends Canvas implements Runnable {
             System.exit(0);
             return null;
         };
+
         gameMenu.onResumeGame = (Void) -> {
+            start();
+            return null;
+        };
+
+        startView.onQuitGame = (Void) -> {
+            System.exit(0);
+            return null;
+        };
+
+        startView.onStartGame = (Void) -> {
             start();
             return null;
         };
@@ -85,7 +99,7 @@ public class Game extends Canvas implements Runnable {
             delta += (now - lastTime) / ns; // time passed divided by time per tick
             lastTime = now;
             while (delta >= 1) {
-                if (state.getCurrentState() != GameStates.MENU) {
+                if (state.getCurrentState() == GameStates.GAME) {
                     tick();
                 }
                 delta--;
@@ -122,8 +136,10 @@ public class Game extends Canvas implements Runnable {
             powerLevel.renderScore(graphics);
             playerLives.renderLives(graphics);
             gameMenu.renderShowMenuButton(graphics);
-        } else {
+        } else if (state.getCurrentState() == GameStates.MENU) {
             gameMenu.render(graphics);
+        } else if (state.getCurrentState() == GameStates.START) {
+            startView.render(graphics);
         }
 
         graphics.dispose();

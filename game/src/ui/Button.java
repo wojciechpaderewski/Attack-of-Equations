@@ -14,6 +14,7 @@ public class Button {
     public Color buttonColor = Color.white;
     public Color textColor = Color.black;
     public Color borderColor = Color.black;
+    public float fontSize = 19f;
 
     Function<Void, Void> onClick;
 
@@ -40,7 +41,9 @@ public class Button {
         graphics.setColor(borderColor);
         graphics.drawRect(x, y, width, height);
 
+
         graphics.setColor(textColor);
+        graphics.setFont(graphics.getFont().deriveFont(fontSize));
         graphics.drawString(text, x + width / 2 - graphics.getFontMetrics().stringWidth(text) / 2, y + height / 2 + graphics.getFontMetrics().getHeight() / 3);
     }
 
