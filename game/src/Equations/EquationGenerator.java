@@ -2,10 +2,10 @@ package Equations;
 
 import java.util.LinkedList;
 
-import ui.PowerLevel;
+import ui.Score;
 
 public class EquationGenerator {
-    PowerLevel powerLevel;
+    Score score;
 
     LinkedList<Equation> equations = new LinkedList<Equation>();
 
@@ -22,15 +22,15 @@ public class EquationGenerator {
 
     double randomNumberDivider = 0.3;
 
-    public EquationGenerator(PowerLevel powerLevel) {
-        this.powerLevel = powerLevel;
+    public EquationGenerator(Score score) {
+        this.score = score;
     }
 
     private double getPercentOfEquationUnderPowerLevel() {
         int allEquations = equations.size();
         int underPowerLevel = 0;
         for (Equation equation : equations) {
-            if (equation.getResult() < powerLevel.getCurrentPowerLevel()) {
+            if (equation.getResult() < score.getCurrentScore()) {
                 underPowerLevel++;
             }
         }
@@ -54,16 +54,16 @@ public class EquationGenerator {
     }
 
     private Equation generateEquationUnderPowerLevel() {
-        Equation equation = new Equation(powerLevel);
+        Equation equation = new Equation(score);
 
         if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel());
+            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
             equation.thirdNumber = 0;
         } else {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel());
-            equation.thirdNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel());
+            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
+            equation.thirdNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
         }
 
         if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
@@ -90,16 +90,16 @@ public class EquationGenerator {
     }
 
     private Equation generateEquationOverPowerLevel() {
-        Equation equation = new Equation(powerLevel);
+        Equation equation = new Equation(score);
 
         if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel() + powerLevel.getCurrentPowerLevel());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel() + powerLevel.getCurrentPowerLevel());
+            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
             equation.thirdNumber = 0;
         } else {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel() + powerLevel.getCurrentPowerLevel());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel() + powerLevel.getCurrentPowerLevel());
-            equation.thirdNumber = (int) (Math.random() * randomNumberDivider * powerLevel.getCurrentPowerLevel() + powerLevel.getCurrentPowerLevel());
+            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
+            equation.thirdNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
         }
 
         if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {

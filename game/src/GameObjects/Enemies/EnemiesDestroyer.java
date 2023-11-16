@@ -6,17 +6,17 @@ import GameObjects.GameObject;
 import GameObjects.GameObjects;
 import GameObjects.Players.Player;
 import ui.GameMap;
-import ui.PowerLevel;
+import ui.Score;
 
 public class EnemiesDestroyer {
     private GameObjects gameObjects;
     private GameMap gameMap;
-    private PowerLevel powerLevel;
+    private Score score;
 
-    public EnemiesDestroyer(GameObjects gameObjects, GameMap gameMap, PowerLevel powerLevel) {
+    public EnemiesDestroyer(GameObjects gameObjects, GameMap gameMap, Score powerLevel) {
         this.gameObjects = gameObjects;
         this.gameMap = gameMap;
-        this.powerLevel = powerLevel;
+        this.score = powerLevel;
     }
 
     private void destroyIfOutOfMapBounds() {

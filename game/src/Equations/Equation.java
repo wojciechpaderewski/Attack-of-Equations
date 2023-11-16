@@ -1,9 +1,9 @@
 package Equations;
 
-import ui.PowerLevel;
+import ui.Score;
 
 public class Equation {
-    PowerLevel powerLevel;
+    Score score;
     String equationToRender;
     
     public int firstNumber = 0;
@@ -14,8 +14,8 @@ public class Equation {
 
     private int result = 0;
 
-    public Equation(PowerLevel powerLevel){
-        this.powerLevel = powerLevel;
+    public Equation(Score powerLevel){
+        this.score = powerLevel;
     }
 
     public void calcEquation() {
@@ -129,9 +129,9 @@ public class Equation {
         // debug print
         System.out.println("firstNumber: " + firstNumber + " secondNumber: " + secondNumber + " thirdNumber: " + thirdNumber);
         System.out.println("firstCalculation: " + firstCalculation + " secondCalculation: " + secondCalculation);
-        System.out.println("result: " + result + " powerLevel: " + powerLevel.getCurrentPowerLevel());
+        System.out.println("result: " + result + " powerLevel: " + score.getCurrentScore());
 
-        return result <= powerLevel.getCurrentPowerLevel();
+        return result <= score.getCurrentScore();
     }
 
     public int getResult() {

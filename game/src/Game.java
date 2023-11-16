@@ -12,7 +12,7 @@ import States.State;
 import ui.GameMap;
 import ui.GameMenu;
 import ui.PlayerLives;
-import ui.PowerLevel;
+import ui.Score;
 import ui.StartView;
 import GameObjects.Enemies.EnemiesDestroyer;
 import GameObjects.Enemies.EnemiesGenerator;
@@ -28,8 +28,8 @@ public class Game extends Canvas implements Runnable {
 
     private GameObjects gameObjects;
     private GameMap gameMap = new GameMap(width, height);
-    private PowerLevel powerLevel = new PowerLevel(gameMap);
-    private PlayerLives playerLives = new PlayerLives(gameMap);
+    private Score powerLevel = new Score(gameMap, state);
+    private PlayerLives playerLives = new PlayerLives(gameMap, state);
     private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
     private GameMenu gameMenu;
     private StartView startView;
@@ -38,22 +38,23 @@ public class Game extends Canvas implements Runnable {
 
     public Game() {
         Window window = new Window(width, height, "Attack of Equations", this);
-        thread = new Thread(this);
-        thread.start();
-
+        
         this.addKeyListener(keyInputHandler);
         this.addMouseListener(mouseHandler);
-
+        
         this.gameObjects = new GameObjects();
         this.gameObjects.add(player);
         this.gameMenu = new GameMenu(gameMap, mouseHandler, state);
         this.startView = new StartView(gameMap, mouseHandler, state);
         this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
         this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
+        
+        thread = new Thread(this);
+        thread.start();
 
         initEvents();
     }
-
+    
     private void initEvents() {
         gameMenu.onQuitGame = (Void) -> {
             System.exit(0);
@@ -130,8 +131,8 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        if (state.getCurrentState() == GameStates.GAME) {
-            gameMap.renderMap(graphics);
+        gameMap.renderMap(graphics);
+        if (state.getCurrentState() == GameStates.GAME ) {
             gameObjects.render(graphics);
             powerLevel.renderScore(graphics);
             playerLives.renderLives(graphics);

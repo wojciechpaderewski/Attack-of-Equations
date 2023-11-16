@@ -10,7 +10,7 @@ import GameObjects.Enemies.Enemy;
 import Handlers.KeyInputHandler;
 import ui.GameMap;
 import ui.PlayerLives;
-import ui.PowerLevel;
+import ui.Score;
 
 
 public class Player extends GameObject {
@@ -19,16 +19,16 @@ public class Player extends GameObject {
     private GameMap gameMap;
     private static Rectangle rect = new Rectangle(startX, startY, 50, 50);
     private PlayerLives playerLives;
-    private PowerLevel powerLevel;
+    private Score score;
     private PlayerTexture texture;
     private int playerSpeed = 7;
 
-    public Player( KeyInputHandler keyInputHandler, GameMap gameMap, PlayerLives playerLives, PowerLevel powerLevel) {
+    public Player( KeyInputHandler keyInputHandler, GameMap gameMap, PlayerLives playerLives, Score powerLevel) {
         super(rect);
         this.keyInputHandler = keyInputHandler;
         this.gameMap = gameMap;
         this.playerLives = playerLives;
-        this.powerLevel = powerLevel;
+        this.score = powerLevel;
         this.texture = new PlayerTexture(rect, powerLevel);
     }
 
@@ -67,7 +67,7 @@ public class Player extends GameObject {
 
             if (equation.isResultLesserOrEqualThanPowerLevel()) {
                 System.out.println("Equation solved");
-                this.powerLevel.setCurrentPowerLevel(equation.getResult());
+                this.score.get(equation.getResult());
             } else {
                 System.out.println("Equation not solved");
                 this.playerLives.decrementLives();

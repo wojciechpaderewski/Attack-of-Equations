@@ -3,23 +3,23 @@ import Equations.Equation;
 import Equations.EquationGenerator;
 import GameObjects.GameObjects;
 import ui.GameMap;
-import ui.PowerLevel;
+import ui.Score;
 
 public class EnemiesGenerator {
     private EquationGenerator equationGenerator;
     private GameObjects gameObjects;
     private GameMap gameMap;
-    private PowerLevel powerLevel;
+    private Score score;
     private int enemiesLimit = 10;
     private int maxSpeed = 7;
 
     private int enemySpawnRate = 100;
     private int ticks = 0;
 
-    public EnemiesGenerator(GameObjects gameObjects, GameMap gameMap, PowerLevel powerLevel) {
+    public EnemiesGenerator(GameObjects gameObjects, GameMap gameMap, Score powerLevel) {
         this.gameObjects = gameObjects;
         this.gameMap = gameMap;
-        this.powerLevel = powerLevel;
+        this.score = powerLevel;
         this.equationGenerator = new EquationGenerator(powerLevel);
     }
 
@@ -33,7 +33,7 @@ public class EnemiesGenerator {
     }
 
     private int calcSpeed() {
-        int powerLevel = this.powerLevel.getCurrentPowerLevel();
+        int powerLevel = this.score.getCurrentScore();
         int speed = 2 + (int) powerLevel / 20;
         if (speed > maxSpeed) {
             speed = maxSpeed;
