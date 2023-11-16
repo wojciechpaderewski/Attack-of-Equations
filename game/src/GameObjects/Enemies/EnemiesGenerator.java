@@ -11,9 +11,9 @@ public class EnemiesGenerator {
     private GameMap gameMap;
     private Score score;
     private int enemiesLimit = 10;
-    private int maxSpeed = 7;
+    private int maxSpeed = 6;
 
-    private int enemySpawnRate = 100;
+    private int enemySpawnRate = 67;
     private int ticks = 0;
 
     public EnemiesGenerator(GameObjects gameObjects, GameMap gameMap, Score powerLevel) {

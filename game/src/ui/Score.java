@@ -52,6 +52,10 @@ public class Score {
             endTime = Instant.now();
         }
 
+        if (currentScore < 0) {
+            state.setCurrentState(GameStates.GAME_OVER);
+        }
+
         if (state.getCurrentState() == GameStates.GAME_OVER) {
             endTime = Instant.now();
         }

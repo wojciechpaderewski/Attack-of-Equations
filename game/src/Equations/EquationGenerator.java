@@ -20,7 +20,7 @@ public class EquationGenerator {
     double percentOfEquationUnderPowerLevel = 0.25;
     double percentOfEquationOverPowerLevel = 0.75;
 
-    double randomNumberDivider = 0.3;
+    double randomNumberDivider = 1;
 
     public EquationGenerator(Score score) {
         this.score = score;
@@ -57,13 +57,13 @@ public class EquationGenerator {
         Equation equation = new Equation(score);
 
         if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
+            equation.firstNumber = (int) (Math.random() * 0.5 * score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * 0.5 * score.getCurrentScore());
             equation.thirdNumber = 0;
         } else {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
-            equation.thirdNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore());
+            equation.firstNumber = (int) (Math.random() * 0.33 * score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * 0.33 * score.getCurrentScore());
+            equation.thirdNumber = (int) (Math.random()* 0.33 * score.getCurrentScore());
         }
 
         if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
@@ -93,13 +93,13 @@ public class EquationGenerator {
         Equation equation = new Equation(score);
 
         if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
+            equation.firstNumber = (int) (Math.random() * 0.7 * score.getCurrentScore() + score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * 0.7 * score.getCurrentScore() + score.getCurrentScore());
             equation.thirdNumber = 0;
         } else {
-            equation.firstNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
-            equation.thirdNumber = (int) (Math.random() * randomNumberDivider * score.getCurrentScore() + score.getCurrentScore());
+            equation.firstNumber = (int) (Math.random() * 0.5 * score.getCurrentScore() + score.getCurrentScore());
+            equation.secondNumber = (int) (Math.random() * 0.5 * score.getCurrentScore() + score.getCurrentScore());
+            equation.thirdNumber = (int) (Math.random() * 0.5 * score.getCurrentScore() + score.getCurrentScore());
         }
 
         if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
