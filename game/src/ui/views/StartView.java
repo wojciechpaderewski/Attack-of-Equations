@@ -1,4 +1,4 @@
-package ui;
+package ui.views;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,6 +7,8 @@ import java.util.function.Function;
 import Handlers.MouseHandler;
 import States.GameStates;
 import States.State;
+import ui.Button;
+import ui.GameMap;
 
 public class StartView {
     static int width = 800;

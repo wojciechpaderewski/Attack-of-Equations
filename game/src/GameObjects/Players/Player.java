@@ -67,7 +67,8 @@ public class Player extends GameObject {
 
             if (equation.isResultLesserOrEqualThanPowerLevel()) {
                 System.out.println("Equation solved");
-                this.score.get(equation.getResult());
+                this.score.incrementScore(equation.getResult());
+                this.score.incrementDefteadEnemiesCounter();
             } else {
                 System.out.println("Equation not solved");
                 this.playerLives.decrementLives();

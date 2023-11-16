@@ -16,7 +16,7 @@ public class Button {
     public Color borderColor = Color.black;
     public float fontSize = 19f;
 
-    Function<Void, Void> onClick;
+    public Function<Void, Void> onClick;
 
     public Button(MouseHandler mouseHandler) {
         mouseHandler.onClick((e) -> {

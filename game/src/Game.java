@@ -13,10 +13,10 @@ import ui.GameMap;
 import ui.GameMenu;
 import ui.PlayerLives;
 import ui.Score;
-import ui.StartView;
+import ui.views.GameOverView;
+import ui.views.StartView;
 import GameObjects.Enemies.EnemiesDestroyer;
 import GameObjects.Enemies.EnemiesGenerator;
-
 
 public class Game extends Canvas implements Runnable {
     static int width = 1024, height = 768;
@@ -28,11 +28,13 @@ public class Game extends Canvas implements Runnable {
 
     private GameObjects gameObjects;
     private GameMap gameMap = new GameMap(width, height);
-    private Score powerLevel = new Score(gameMap, state);
+    private Score score = new Score(gameMap, state);
     private PlayerLives playerLives = new PlayerLives(gameMap, state);
-    private Player player = new Player(keyInputHandler, gameMap, playerLives, powerLevel);
+    private Player player = new Player(keyInputHandler, gameMap, playerLives, score);
     private GameMenu gameMenu;
     private StartView startView;
+    private GameOverView gameOverView;
+    private GameOverView gameWonView;
     private EnemiesGenerator enemiesGenerator;
     private EnemiesDestroyer enemiesDestroyer;
 
@@ -46,8 +48,10 @@ public class Game extends Canvas implements Runnable {
         this.gameObjects.add(player);
         this.gameMenu = new GameMenu(gameMap, mouseHandler, state);
         this.startView = new StartView(gameMap, mouseHandler, state);
-        this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, powerLevel);
-        this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, powerLevel);
+        this.gameOverView = new GameOverView(gameMap, score, mouseHandler, state);
+        this.gameWonView = new GameOverView(gameMap, score, mouseHandler, state);
+        this.enemiesGenerator = new EnemiesGenerator(gameObjects, gameMap, score);
+        this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, score);
         
         thread = new Thread(this);
         thread.start();
@@ -63,6 +67,7 @@ public class Game extends Canvas implements Runnable {
 
         gameMenu.onResumeGame = (Void) -> {
             start();
+            this.score.resumeTimer();
             return null;
         };
 
@@ -73,18 +78,43 @@ public class Game extends Canvas implements Runnable {
 
         startView.onStartGame = (Void) -> {
             start();
+            this.score.startTimer();
             return null;
         };
+
+        gameOverView.onQuitGame = (Void) -> {
+            System.exit(0);
+            return null;
+        };
+
+        gameOverView.onRestartGame = (Void) -> {
+            restartGame();
+            return null;
+        };
+
+        gameWonView.onQuitGame = (Void) -> {
+            System.exit(0);
+            return null;
+        };
+
+        gameWonView.onRestartGame = (Void) -> {
+            restartGame();
+            return null;
+        };
+    }
+
+    private void restartGame() {
+        System.out.println("Restarting game");
     }
 
     public synchronized void start() {
         System.out.println("Starting game");
         state.setCurrentState(GameStates.GAME);
-
     }
 
     public synchronized void stop() {
         state.setCurrentState(GameStates.MENU);
+        score.stopTimer();
     }
 
     public void run() {
@@ -120,6 +150,8 @@ public class Game extends Canvas implements Runnable {
         gameObjects.tick();
         enemiesGenerator.tick();
         enemiesDestroyer.tick();
+        playerLives.tick();
+        score.tick();
     }
 
     // render game state
@@ -134,13 +166,17 @@ public class Game extends Canvas implements Runnable {
         gameMap.renderMap(graphics);
         if (state.getCurrentState() == GameStates.GAME ) {
             gameObjects.render(graphics);
-            powerLevel.renderScore(graphics);
+            score.renderScore(graphics);
             playerLives.renderLives(graphics);
             gameMenu.renderShowMenuButton(graphics);
         } else if (state.getCurrentState() == GameStates.MENU) {
             gameMenu.render(graphics);
         } else if (state.getCurrentState() == GameStates.START) {
             startView.render(graphics);
+        } else if (state.getCurrentState() == GameStates.GAME_OVER) {
+            gameOverView.render(graphics);
+        } else if (state.getCurrentState() == GameStates.GAME_WON) {
+            gameWonView.render(graphics);
         }
 
         graphics.dispose();
