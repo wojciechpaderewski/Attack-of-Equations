@@ -12,7 +12,7 @@ public class Enemy extends GameObject {
     private EnemyTexture texture;
     private Rectangle rect;
 
-    public Enemy(int x, int y, Equation equation) {
+    Enemy(int x, int y, Equation equation) {
         super(new Rectangle(x, y, width, height));
         this.rect = (Rectangle) this.shape;
         this.texture = new EnemyTexture(rect, equation);

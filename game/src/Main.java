@@ -63,7 +63,7 @@ public class Main extends Canvas implements Runnable  {
         }
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        // render game
+
         panel.render(graphics);
 
         graphics.dispose();

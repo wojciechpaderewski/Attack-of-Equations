@@ -9,7 +9,7 @@ import Handlers.MouseHandler;
 
 public class Button {
     public String text = "Button";
-    public int x = 0, y = 0, width = 100, height = 45;
+    public int x = 0, y = 0, width = 120, height = 45;
 
     public Color buttonColor = Color.white;
     public Color textColor = Color.black;

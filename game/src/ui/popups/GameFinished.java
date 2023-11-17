@@ -1,22 +1,18 @@
-package ui.views;
+package ui.popups;
 
 import java.awt.Graphics;
 import java.util.function.Function;
 
 import Handlers.MouseHandler;
-import States.GameStates;
 import States.State;
 import ui.Button;
-import ui.GameMap;
 import ui.Score;
 
-public class GameFinishedView {
-    private GameMap gameMap;
+public class GameFinished extends Popup {
     private Score score;
     private String title;
     private MouseHandler mouseHandler;
     private int buttonWidth = 200;
-    private State state;
     
     public Function<Void, Void> onQuitGame;
     public Function<Void, Void> onRestartGame;
@@ -24,12 +20,11 @@ public class GameFinishedView {
     private Button quitButton;
     private Button restartButton;
 
-    public GameFinishedView(GameMap gameMap, Score score, MouseHandler mouseHandler, State state, String title) {
-        this.gameMap = gameMap;
+    public GameFinished(int windowWidth, int windowHeight, Score score, MouseHandler mouseHandler, State state, String title) {
+        super(windowWidth, windowHeight);
         this.score = score;
         this.title = title;
         this.mouseHandler = mouseHandler;
-        this.state = state;
 
         initQuitButton();
         initRestartButton();
@@ -39,7 +34,7 @@ public class GameFinishedView {
         quitButton = new Button(mouseHandler);
         quitButton.text = "Quit";
         quitButton.width = buttonWidth;
-        quitButton.x = gameMap.getWidth() / 2 - quitButton.width / 2;
+        quitButton.x = this.windowWidth / 2 - quitButton.width / 2;
         quitButton.y = 500;
         quitButton.onClick = (Void) -> {
             onQuitGame.apply(null);
@@ -51,7 +46,7 @@ public class GameFinishedView {
         restartButton = new Button(mouseHandler);
         restartButton.text = "Restart game";
         restartButton.width = buttonWidth;
-        restartButton.x = gameMap.getWidth() / 2 - restartButton.width / 2;
+        restartButton.x = this.windowWidth / 2 - restartButton.width / 2;
         restartButton.y = 400;
 
         restartButton.onClick = (Void) -> {
@@ -61,18 +56,16 @@ public class GameFinishedView {
     }
 
     public void render(Graphics graphics) {
-        graphics.setColor(java.awt.Color.BLACK);
-        graphics.fillRect(0, 0, gameMap.getWidth(), gameMap.getHeight());
+        super.render(graphics);
         graphics.setColor(java.awt.Color.WHITE);
         graphics.setFont(graphics.getFont().deriveFont(30f));
-        graphics.drawString(this.title, gameMap.getWidth() / 2 - graphics.getFontMetrics().stringWidth(title) / 2, 200);
+        graphics.drawString(this.title, this.windowWidth / 2 - graphics.getFontMetrics().stringWidth(title) / 2, 200);
         graphics.setFont(graphics.getFont().deriveFont(20f));
-        graphics.drawString("Your score: " + score.getCurrentScore(), gameMap.getWidth() / 2 - graphics.getFontMetrics().stringWidth("Your score: " + score.getCurrentScore()) / 2, 250);
+        graphics.drawString("Your score: " + score.getCurrentScore(), this.windowWidth / 2 - graphics.getFontMetrics().stringWidth("Your score: " + score.getCurrentScore()) / 2, 250);
         graphics.setFont(graphics.getFont().deriveFont(15f));
-        graphics.drawString("Defeated enemies: " + score.getDefteadEnemiesCounter(), gameMap.getWidth() / 2 - graphics.getFontMetrics().stringWidth("Defeated enemies: " + score.getDefteadEnemiesCounter()) / 2, 300);
+        graphics.drawString("Defeated enemies: " + score.getDefteadEnemiesCounter(), this.windowWidth / 2 - graphics.getFontMetrics().stringWidth("Defeated enemies: " + score.getDefteadEnemiesCounter()) / 2, 300);
         graphics.setFont(graphics.getFont().deriveFont(15f));
-        graphics.drawString("Time: " + score.getFormattedTime(), gameMap.getWidth() / 2 - graphics.getFontMetrics().stringWidth("Time: " + score.getFormattedTime()) / 2, 330);
-
+        graphics.drawString("Time: " + score.getFormattedTime(), this.windowWidth / 2 - graphics.getFontMetrics().stringWidth("Time: " + score.getFormattedTime()) / 2, 330);
 
         quitButton.render(graphics);
         restartButton.render(graphics);

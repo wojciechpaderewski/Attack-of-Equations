@@ -5,53 +5,62 @@ import Handlers.KeyInputHandler;
 import Handlers.MouseHandler;
 import States.GameStates;
 import States.State;
-import ui.GameMap;
-import ui.GameMenu;
 import ui.Score;
-import ui.views.GameOverView;
-import ui.views.StartView;
+import ui.popups.GameOver;
+import ui.popups.Menu;
+import ui.popups.Start;
 
 public class Panel {
     private State state;
     private Score score;
-    private GameMenu gameMenu;
-    private StartView startView;
-    private GameOverView gameOverView;
-    private GameOverView gameWonView;
+    private Menu gameMenu;
+    private Start startPopup;
+    private GameOver gameOverPopup;
+    private GameOver gameWonPopup;
     private Game game;
 
     public Panel(int windowWidth,int windowHeight,MouseHandler mouseHandler, KeyInputHandler keyInputHandler) {
+        this.state = new State(GameStates.START);
         this.score = new Score(windowWidth, windowHeight, state);
-        this.gameMenu = new GameMenu(gameMap, mouseHandler, state);
-        this.startView = new StartView(gameMap, mouseHandler, state);
-        this.gameOverView = new GameOverView(gameMap, score, mouseHandler, state);
-        this.gameWonView = new GameOverView(gameMap, score, mouseHandler, state);
+        this.gameMenu = new Menu(windowWidth, windowHeight, mouseHandler, state);
+        this.startPopup = new Start(windowWidth, windowHeight, mouseHandler, state);
+        this.gameOverPopup = new GameOver(windowWidth, windowHeight, score, mouseHandler, state);
+        this.gameWonPopup = new GameOver(windowWidth, windowHeight, score, mouseHandler, state);
         this.game = new Game(windowWidth, windowHeight, state, keyInputHandler, mouseHandler, score);
         
         initEvents();
     }
     
     private void initEvents() {
-        startView.onStartGame = start();
-        gameOverView.onRestartGame = start();
-        gameWonView.onRestartGame = start();
-        gameOverView.onQuitGame = quitGame();
-        gameWonView.onQuitGame = quitGame();
+        startPopup.onStartGame = start();
+        gameOverPopup.onRestartGame = start();
+        gameWonPopup.onRestartGame = start();
+        gameOverPopup.onQuitGame = quitGame();
+        gameWonPopup.onQuitGame = quitGame();
         gameMenu.onQuitGame = quitGame();
+        startPopup.onQuitGame = quitGame();
     }
 
     private Function<Void, Void> quitGame() {
-        System.exit(0);
-        return null;
+        return (Void) -> {
+            if (state.get() == GameStates.GAME) {
+                return null;
+            }
+            System.exit(0);
+            return null;
+        };
     }
 
     public Function<Void, Void> start() {
-        state.set(GameStates.GAME);
-        return null;
+        return (Void) -> {
+            state.set(GameStates.GAME);
+            score.startTimer();
+            return null;
+        };
     }
 
     public synchronized void stop() {
-        state.set(GameStates.MENU);
+        state.set(GameStates.GAME_OVER);
         score.stopTimer();
     }
 
@@ -64,15 +73,22 @@ public class Panel {
     // render game state
     public void render(Graphics graphics) {
         game.render(graphics);
-
-        if (state.get() == GameStates.MENU) {
-            gameMenu.render(graphics);
-        } else if (state.get() == GameStates.START) {
-            startView.render(graphics);
-        } else if (state.get() == GameStates.GAME_OVER) {
-            gameOverView.render(graphics);
-        } else if (state.get() == GameStates.GAME_WON) {
-            gameWonView.render(graphics);
+        
+        switch (state.get()) {
+            case MENU:
+                gameMenu.render(graphics);
+                break;
+            case GAME_OVER:
+                gameOverPopup.render(graphics);
+                break;
+            case GAME_WON:
+                gameWonPopup.render(graphics);
+                break;
+            case START:
+                startPopup.render(graphics);
+                break;
+            default:
+                break;
         }
     }
     

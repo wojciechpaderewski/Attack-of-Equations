@@ -8,11 +8,14 @@ import Handlers.KeyInputHandler;
 import Handlers.MouseHandler;
 import States.GameStates;
 import States.State;
+import ui.Button;
 import ui.GameMap;
 import ui.PlayerLives;
 import ui.Score;
 
 public class Game {
+    MouseHandler mouseHandler;
+
     private GameMap gameMap;
     private State state;
     private GameObjects gameObjects;
@@ -21,8 +24,11 @@ public class Game {
     private Player player;
     private EnemiesGenerator enemiesGenerator;
     private EnemiesDestroyer enemiesDestroyer;
+    private Button menuButton;
 
     public Game(int windowWidth,int windowHeight, State state,KeyInputHandler keyInputHandler, MouseHandler mouseHandler, Score score) {
+        this.state = state;
+        this.mouseHandler = mouseHandler;
         this.gameMap = new GameMap(windowWidth, windowHeight);
         this.gameObjects = new GameObjects();
         this.score = score;
@@ -33,6 +39,20 @@ public class Game {
         this.enemiesDestroyer = new EnemiesDestroyer(gameObjects, gameMap, score);
         
         this.gameObjects.add(player);
+
+        initMenuButton();
+    }
+
+    private void initMenuButton () {
+        menuButton = new Button(mouseHandler);
+        menuButton.text = "Menu";
+        int offset = 100;
+        menuButton.x = gameMap.getWidth() - menuButton.width / 2 - offset;
+        menuButton.y = gameMap.getHeight() - menuButton.height / 2 - offset;
+        menuButton.onClick = (Void) -> {
+            state.set(GameStates.MENU);
+            return null;
+        };
     }
 
     // update game state
@@ -50,6 +70,6 @@ public class Game {
         gameObjects.render(graphics);
         score.renderScore(graphics);
         playerLives.renderLives(graphics);
-        //TODO:button
+        menuButton.render(graphics);
     }
 }
