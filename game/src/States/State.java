@@ -8,11 +8,11 @@ public class State {
         this.currentState = currentState;
     }
 
-    public GameStates getCurrentState() {
+    public GameStates get() {
         return currentState;
     }
 
-    public void setCurrentState(GameStates currentState) {
+    public void set(GameStates currentState) {
         this.currentState = currentState;
     }
 }

@@ -40,7 +40,7 @@ public class PlayerLives {
 
     public void tick () {
         if (isGameOver()) {
-            state.setCurrentState(GameStates.GAME_OVER);
+            state.set(GameStates.GAME_OVER);
         }
     }
 

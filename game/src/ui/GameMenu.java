@@ -37,7 +37,7 @@ public class GameMenu {
         showMenuButton.y = gameMap.getHeight() - showMenuButton.height - 50;
 
         showMenuButton.onClick = (Void) -> {
-            state.setCurrentState(GameStates.MENU);
+            state.set(GameStates.MENU);
             return null;
         };
     }
@@ -48,7 +48,7 @@ public class GameMenu {
         quitButton.x = gameMap.getWidth() / 2 - quitButton.width / 2;
         quitButton.y = 300;
         quitButton.onClick = (Void) -> {
-             if(state.getCurrentState() != GameStates.MENU) {
+             if(state.get() != GameStates.MENU) {
                 return null;
             }
             onQuitGame.apply(null);
@@ -63,7 +63,7 @@ public class GameMenu {
         resumeButton.y = 420;
 
         resumeButton.onClick = (Void) -> {
-             if(state.getCurrentState() != GameStates.MENU) {
+             if(state.get() != GameStates.MENU) {
                 return null;
             }
             onResumeGame.apply(null);

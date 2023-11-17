@@ -40,7 +40,7 @@ public class StartView {
         quitButton.x = gameMap.getWidth() / 2 - quitButton.width / 2;
         quitButton.y = 500;
         quitButton.onClick = (Void) -> {
-             if(state.getCurrentState() != GameStates.START) {
+             if(state.get() != GameStates.START) {
                 return null;
             }
             onQuitGame.apply(null);
@@ -56,7 +56,7 @@ public class StartView {
         startButton.y = 350;
 
         startButton.onClick = (Void) -> {
-             if(state.getCurrentState() != GameStates.START) {
+             if(state.get() != GameStates.START) {
                 return null;
             }
             onStartGame.apply(null);

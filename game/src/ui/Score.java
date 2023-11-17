@@ -13,16 +13,17 @@ public class Score {
     private int scoreLimit = 100;
     private int startingScore = 10;
     private int currentScore = startingScore;
-    private GameMap gameMap;
     private State state;
     private int defteadEnemiesCounter = 0;
+    private int width, height;
 
     Instant startTime = Instant.now();
     Instant endTime = Instant.now();
     Instant stopTime = Instant.now();
 
-    public Score(GameMap gameMap, State state) {
-        this.gameMap = gameMap;
+    public Score(int width, int height, State state) {
+        this.width = width;
+        this.height = height;
         this.state = state;
     }
 
@@ -48,15 +49,15 @@ public class Score {
 
     public void tick () {
         if (isGameWon()) {
-            state.setCurrentState(GameStates.GAME_WON);
+            state.set(GameStates.GAME_WON);
             endTime = Instant.now();
         }
 
         if (currentScore < 0) {
-            state.setCurrentState(GameStates.GAME_OVER);
+            state.set(GameStates.GAME_OVER);
         }
 
-        if (state.getCurrentState() == GameStates.GAME_OVER) {
+        if (state.get() == GameStates.GAME_OVER) {
             endTime = Instant.now();
         }
     }
