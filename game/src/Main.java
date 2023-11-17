@@ -1,7 +1,10 @@
 import java.awt.Canvas;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+
+import javax.swing.JFrame;
 
 import Handlers.KeyInputHandler;
 import Handlers.MouseHandler;
@@ -12,16 +15,32 @@ public class Main extends Canvas implements Runnable  {
     private KeyInputHandler keyInputHandler = new KeyInputHandler();
     private MouseHandler mouseHandler = new MouseHandler();
     private Panel panel;
+    private JFrame frame;
+    private String title = "Attack of Equations";
 
     public Main() {
-        new Window(width, height, "Attack of Equations", this);
+        this.frame = new JFrame(title);
+        initWindow();
+
         this.panel = new Panel(width, height, mouseHandler, keyInputHandler);
-        
         this.addKeyListener(keyInputHandler);
         this.addMouseListener(mouseHandler);
 
         Thread thread = new Thread(this);
         thread.start();
+    }
+
+    private void initWindow() {
+        this.frame = new JFrame(title);
+        frame.setPreferredSize(new Dimension(width, height));
+        frame.setMaximumSize(new Dimension(width, height));
+        frame.setMinimumSize(new Dimension(width, height));
+        
+        frame.add(this);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     public void run() {
