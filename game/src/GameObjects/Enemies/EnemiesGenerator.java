@@ -1,7 +1,11 @@
 package GameObjects.Enemies;
+import java.awt.Rectangle;
+
 import Equations.Equation;
 import Equations.EquationGenerator;
+import GameObjects.GameObject;
 import GameObjects.GameObjects;
+import GameObjects.Players.Player;
 import ui.GameMap;
 import ui.Score;
 
@@ -49,6 +53,45 @@ public class EnemiesGenerator {
         System.out.println("CurrentSpeed: " + calcSpeed());
     }
 
+    private void removeEquatinons() {
+        for(int i = 0; i < gameObjects.getGameObjects().size(); i++) {
+            GameObject gameObject = gameObjects.getGameObjects().get(i);
+            if (gameObject instanceof Enemy) {
+                Enemy enemy = (Enemy) gameObject;
+                Rectangle enemyRect = enemy.getShape();
+                int x = (int) enemyRect.getX();
+                int y = (int) enemyRect.getY();
+                int mapWidth = gameMap.getWidth();
+                int mapHeight = gameMap.getHeight();
+                int width = (int) enemyRect.getWidth();
+                int height = (int) enemyRect.getHeight();
+                if (x < 0 || x > mapWidth - 1.5 * width || y < 0 || y > mapHeight - 2 * height) {
+                    equationGenerator.removeEquation(enemy.getEquation());
+                }
+            }
+        }
+    }
+
+    private void removeEquationOfDestroyedEnemy() {
+        Player player =  gameObjects.get(Player.class);
+        if (player == null) {
+            return;
+        }
+
+        for (int i = 0; i < gameObjects.getGameObjects().size(); i++) {
+            GameObject gameObject = gameObjects.getGameObjects().get(i);
+            if (gameObject instanceof Enemy) {
+                Enemy enemy = (Enemy) gameObject;
+                Rectangle enemyRect = enemy.getShape();
+                Rectangle playerRect = player.getShape();
+                if (enemyRect.intersects(playerRect)) {
+                    equationGenerator.removeEquation(enemy.getEquation());
+                }
+            }
+        }
+    }
+
+
     private void generateEnemies() {
         if (ticks == enemySpawnRate) {
             if (gameObjects.getGameObjects().size() >= enemiesLimit) {
@@ -67,6 +110,8 @@ public class EnemiesGenerator {
     public void tick () {
         generateEnemies();
         changeEnemiesSpeed();
+        removeEquatinons();
+        removeEquationOfDestroyedEnemy();
         ticks++;
     }
 

@@ -9,25 +9,29 @@ public class EquationGenerator {
 
     LinkedList<Equation> equations = new LinkedList<Equation>();
 
-    double percentOfAddition = 0.30;
-    double percentOfSubtraction = 0.15;
-    double percentOfMultiplication = 0.25;
-    double percentOfDivision = 0.1;
+    double percentOfAddition = 0.50;
+    double percentOfSubtraction = 0.20;
+    double percentOfMultiplication = 0.30;
 
     double percentOf2Numbers = 0.7;
     double percentOf3Numbers = 0.3;
 
-    double percentOfEquationUnderPowerLevel = 0.25;
-    double percentOfEquationOverPowerLevel = 0.75;
+    double percentOfEquationUnderPowerLevel = 0.35;
+    double percentOfEquationOverPowerLevel = 0.65;
 
-    double randomNumberDivider = 1;
 
     public EquationGenerator(Score score) {
         this.score = score;
     }
 
     private double getPercentOfEquationUnderPowerLevel() {
-        int allEquations = equations.size();
+        int allEquations = 0;
+        for (Equation equation : equations) {
+            if (equation == null) {
+                continue;
+            }
+            allEquations++;
+        }
         int underPowerLevel = 0;
         for (Equation equation : equations) {
             if (equation.getResult() < score.getCurrentScore()) {
@@ -54,80 +58,122 @@ public class EquationGenerator {
     }
 
     private Equation generateEquationUnderPowerLevel() {
-        Equation equation = new Equation(score);
+        int maxIterations = 35;
+        int expetedResult = getRandomNumber(1, score.getCurrentScore());
+        Equation nearestEquation = null;
+        
+        for (int i = 0; i < maxIterations; i++) {
+            Equation equation = new Equation(score);
 
-        if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
-            equation.firstNumber = (int) (Math.random() * 0.5 * score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * 0.5 * score.getCurrentScore());
-            equation.thirdNumber = 0;
-        } else {
-            equation.firstNumber = (int) (Math.random() * 0.33 * score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * 0.33 * score.getCurrentScore());
-            equation.thirdNumber = (int) (Math.random()* 0.33 * score.getCurrentScore());
+            if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
+                int divider = getRandomNumber(1, (int) score.getCurrentScore() / 2);
+                equation.firstNumber = getRandomNumber(1, (int) score.getCurrentScore() / divider);
+                equation.secondNumber = getRandomNumber(1, (int) score.getCurrentScore() / divider);
+                equation.thirdNumber = 0;
+            } else {
+                int divider = getRandomNumber(1, (int) score.getCurrentScore() / 3);
+                equation.firstNumber = getRandomNumber(1, (int) score.getCurrentScore() / divider);
+                equation.secondNumber = getRandomNumber(1, (int) score.getCurrentScore() / divider);
+                equation.thirdNumber = getRandomNumber(1, (int) score.getCurrentScore() / divider);
+            }
+
+            setCalulationType(equation);
+            equation.calcEquation();
+
+            if (equation.getResult() == expetedResult) {
+                return equation;
+            }
+
+            if (equation.getResult() < 0) {
+                continue;
+            }
+
+            if (equation.getResult() < score.getCurrentScore()) {
+                if (nearestEquation == null) {
+                    nearestEquation = equation;
+                } else if (Math.abs(equation.getResult() - expetedResult) < Math.abs(nearestEquation.getResult() - expetedResult)) {
+                    nearestEquation = equation;
+                }
+            }
+
+            if (i == maxIterations - 1 && nearestEquation == null) {
+                maxIterations++;
+            }
         }
 
-        if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
-            equation.firstCalculation = CalculationType.ADDITION;
-        } else if (getPercentOfCalculationType(CalculationType.SUBTRACTION) < percentOfSubtraction) {
-            equation.firstCalculation = CalculationType.SUBTRACTION;
-        } else if (getPercentOfCalculationType(CalculationType.MULTIPLICATION) < percentOfMultiplication) {
-            equation.firstCalculation = CalculationType.MULTIPLICATION;
-        } else if (getPercentOfCalculationType(CalculationType.DIVISION) < percentOfDivision) {
-            equation.firstCalculation = CalculationType.DIVISION;
+        if (nearestEquation == null) {
+            nearestEquation = getDefultEquation(nearestEquation);
         }
 
-        if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
-            equation.secondCalculation = CalculationType.ADDITION;
-        } else if (getPercentOfCalculationType(CalculationType.SUBTRACTION) < percentOfSubtraction) {
-            equation.secondCalculation = CalculationType.SUBTRACTION;
-        } else if (getPercentOfCalculationType(CalculationType.MULTIPLICATION) < percentOfMultiplication) {
-            equation.secondCalculation = CalculationType.MULTIPLICATION;
-        } else if (getPercentOfCalculationType(CalculationType.DIVISION) < percentOfDivision) {
-            equation.secondCalculation = CalculationType.DIVISION;
-        }
-
-        return equation;
+        return nearestEquation;
     }
 
     private Equation generateEquationOverPowerLevel() {
-        Equation equation = new Equation(score);
+        int maxIterations = 15;
+        int expetedResult = getRandomNumber(score.getCurrentScore() + 1, 2 * score.getCurrentScore());
+        Equation nearestEquation = null;
+        
+        for (int i = 0; i < maxIterations; i++) {
+            Equation equation = new Equation(score);
 
-        if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
-            equation.firstNumber = (int) (Math.random() * 0.7 * score.getCurrentScore() + score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * 0.7 * score.getCurrentScore() + score.getCurrentScore());
-            equation.thirdNumber = 0;
-        } else {
-            equation.firstNumber = (int) (Math.random() * 0.5 * score.getCurrentScore() + score.getCurrentScore());
-            equation.secondNumber = (int) (Math.random() * 0.5 * score.getCurrentScore() + score.getCurrentScore());
-            equation.thirdNumber = (int) (Math.random() * 0.5 * score.getCurrentScore() + score.getCurrentScore());
+            if (getPercentOf2NumbersEquations() < percentOf2Numbers) {
+                int divider = getRandomNumber(1, 2);
+                equation.firstNumber = getRandomNumber((int) score.getCurrentScore() / divider, 2 * (int) score.getCurrentScore() / divider);
+                equation.secondNumber = getRandomNumber((int) score.getCurrentScore() / divider, 2 * (int) score.getCurrentScore() / divider);
+                equation.thirdNumber = 0;
+            } else {
+                int divider = getRandomNumber(1, 3);
+                equation.firstNumber = getRandomNumber((int) score.getCurrentScore() / divider, 2 * (int) score.getCurrentScore() / divider);
+                equation.secondNumber = getRandomNumber((int) score.getCurrentScore() / divider, 2 * (int) score.getCurrentScore() / divider);
+                equation.thirdNumber = getRandomNumber((int) score.getCurrentScore() / divider, 2 * (int) score.getCurrentScore() / divider);
+            }
+
+            setCalulationType(equation);
+            equation.calcEquation();
+
+            if (equation.getResult() == expetedResult) {
+                return equation;
+            }
+
+            if (equation.getResult() < 0) {
+                continue;
+            }
+
+            if (equation.getResult() > score.getCurrentScore()) {
+                if (nearestEquation == null) {
+                    nearestEquation = equation;
+                } else if (Math.abs(equation.getResult() - expetedResult) < Math.abs(nearestEquation.getResult() - expetedResult)) {
+                    nearestEquation = equation;
+                }
+            }
+
+        }
+        
+        if (nearestEquation == null) {
+            nearestEquation = getDefultEquation(nearestEquation);
         }
 
-        if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
-            equation.firstCalculation = CalculationType.ADDITION;
-        } else if (getPercentOfCalculationType(CalculationType.SUBTRACTION) < percentOfSubtraction) {
-            equation.firstCalculation = CalculationType.SUBTRACTION;
-        } else if (getPercentOfCalculationType(CalculationType.MULTIPLICATION) < percentOfMultiplication) {
-            equation.firstCalculation = CalculationType.MULTIPLICATION;
-        } else if (getPercentOfCalculationType(CalculationType.DIVISION) < percentOfDivision) {
-            equation.firstCalculation = CalculationType.DIVISION;
-        }
+        return nearestEquation;
+    }
 
-        if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
-            equation.secondCalculation = CalculationType.ADDITION;
-        } else if (getPercentOfCalculationType(CalculationType.SUBTRACTION) < percentOfSubtraction) {
-            equation.secondCalculation = CalculationType.SUBTRACTION;
-        } else if (getPercentOfCalculationType(CalculationType.MULTIPLICATION) < percentOfMultiplication) {
-            equation.secondCalculation = CalculationType.MULTIPLICATION;
-        } else if (getPercentOfCalculationType(CalculationType.DIVISION) < percentOfDivision) {
-            equation.secondCalculation = CalculationType.DIVISION;
-        }
-
-        return equation;
+    private Equation getDefultEquation(Equation equation) {
+        Equation defultEquation = new Equation(score);
+        defultEquation.firstNumber = 1;
+        defultEquation.secondNumber = 1;
+        defultEquation.thirdNumber = 0;
+        defultEquation.firstCalculation = CalculationType.SUBTRACTION;
+        return defultEquation;
     }
 
     private double getPercentOfCalculationType(CalculationType calculationType) {
-        int allEquations = equations.size();
         int calculationTypeCount = 0;
+        int allEquations = 0;
+        for (Equation equation : equations) {
+            if (equation == null) {
+                continue;
+            }
+            allEquations++;
+        }
         for (Equation equation : equations) {
             if (equation.firstCalculation == calculationType) {
                 calculationTypeCount++;
@@ -141,7 +187,13 @@ public class EquationGenerator {
     }
 
     private double getPercentOf2NumbersEquations() {
-        int allEquations = equations.size();
+        int allEquations = 0;
+        for (Equation equation : equations) {
+            if (equation == null) {
+                continue;
+            }
+            allEquations++;
+        }
         int twoNumbers = 0;
         for (Equation equation : equations) {
             if (equation.thirdNumber == 0) {
@@ -152,4 +204,29 @@ public class EquationGenerator {
         return (double) twoNumbers / allEquations;
     }
 
+    private void setCalulationType(Equation equation) {
+        if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
+            equation.firstCalculation = CalculationType.ADDITION;
+        } else if (getPercentOfCalculationType(CalculationType.SUBTRACTION) < percentOfSubtraction) {
+            equation.firstCalculation = CalculationType.SUBTRACTION;
+        } else if (getPercentOfCalculationType(CalculationType.MULTIPLICATION) < percentOfMultiplication) {
+            equation.firstCalculation = CalculationType.MULTIPLICATION;
+        }
+
+        if (getPercentOfCalculationType(CalculationType.ADDITION) < percentOfAddition) {
+            equation.secondCalculation = CalculationType.ADDITION;
+        } else if (getPercentOfCalculationType(CalculationType.SUBTRACTION) < percentOfSubtraction) {
+            equation.secondCalculation = CalculationType.SUBTRACTION;
+        } else if (getPercentOfCalculationType(CalculationType.MULTIPLICATION) < percentOfMultiplication) {
+            equation.secondCalculation = CalculationType.MULTIPLICATION;
+        }
+    }
+
+    private int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public void removeEquation(Equation equation) {
+        equations.remove(equation);
+    }
 }

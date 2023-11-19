@@ -8,7 +8,6 @@ import Handlers.KeyInputHandler;
 import Handlers.MouseHandler;
 import States.GameStates;
 import States.State;
-import ui.Button;
 import ui.GameMap;
 import ui.MenuButton;
 import ui.PlayerLives;
