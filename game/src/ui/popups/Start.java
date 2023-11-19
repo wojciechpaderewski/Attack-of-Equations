@@ -25,7 +25,7 @@ public class Start extends Popup {
         this.mouseHandler = mouseHandler;
         this.state = state;
 
-        this.width = 700;
+        this.width = 600;
 
         initQuitButton();
         initStartButton();
