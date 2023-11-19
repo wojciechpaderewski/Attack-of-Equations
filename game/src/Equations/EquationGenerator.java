@@ -16,8 +16,8 @@ public class EquationGenerator {
     double percentOf2Numbers = 0.7;
     double percentOf3Numbers = 0.3;
 
-    double percentOfEquationUnderPowerLevel = 0.35;
-    double percentOfEquationOverPowerLevel = 0.65;
+    double percentOfEquationUnderPowerLevel = 0.25;
+    double percentOfEquationOverPowerLevel = 0.75;
 
 
     public EquationGenerator(Score score) {
@@ -25,13 +25,7 @@ public class EquationGenerator {
     }
 
     private double getPercentOfEquationUnderPowerLevel() {
-        int allEquations = 0;
-        for (Equation equation : equations) {
-            if (equation == null) {
-                continue;
-            }
-            allEquations++;
-        }
+        int allEquations = equations.size();
         int underPowerLevel = 0;
         for (Equation equation : equations) {
             if (equation.getResult() < score.getCurrentScore()) {
@@ -167,13 +161,8 @@ public class EquationGenerator {
 
     private double getPercentOfCalculationType(CalculationType calculationType) {
         int calculationTypeCount = 0;
-        int allEquations = 0;
-        for (Equation equation : equations) {
-            if (equation == null) {
-                continue;
-            }
-            allEquations++;
-        }
+        int allEquations = equations.size();
+
         for (Equation equation : equations) {
             if (equation.firstCalculation == calculationType) {
                 calculationTypeCount++;
@@ -187,13 +176,7 @@ public class EquationGenerator {
     }
 
     private double getPercentOf2NumbersEquations() {
-        int allEquations = 0;
-        for (Equation equation : equations) {
-            if (equation == null) {
-                continue;
-            }
-            allEquations++;
-        }
+        int allEquations = equations.size();
         int twoNumbers = 0;
         for (Equation equation : equations) {
             if (equation.thirdNumber == 0) {

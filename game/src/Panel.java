@@ -7,6 +7,7 @@ import States.GameStates;
 import States.State;
 import ui.Score;
 import ui.popups.GameOver;
+import ui.popups.GameWon;
 import ui.popups.Instruction;
 import ui.popups.Menu;
 import ui.popups.Start;
@@ -17,7 +18,7 @@ public class Panel {
     private Menu gameMenu;
     private Start startPopup;
     private GameOver gameOverPopup;
-    private GameOver gameWonPopup;
+    private GameWon gameWonPopup;
     private Instruction instructionPopup;
     private Game game;
 
@@ -37,7 +38,7 @@ public class Panel {
 
         this.startPopup = new Start(windowWidth, windowHeight, mouseHandler, state);
         this.gameOverPopup = new GameOver(windowWidth, windowHeight, score, mouseHandler, state);
-        this.gameWonPopup = new GameOver(windowWidth, windowHeight, score, mouseHandler, state);
+        this.gameWonPopup = new GameWon(windowWidth, windowHeight, score, mouseHandler, state);
         this.instructionPopup = new Instruction(windowWidth, windowHeight, state, mouseHandler, score);
         
         initEvents();
@@ -51,7 +52,7 @@ public class Panel {
     
     private void initEvents() {
         startPopup.onStartGame = start();
-        gameOverPopup.onRestartGame = start();
+        gameOverPopup.onRestartGame = restartGame();
         gameWonPopup.onRestartGame = restartGame();
         gameMenu.onRestartGame = restartGame();
         gameMenu.onResumeGame = start();

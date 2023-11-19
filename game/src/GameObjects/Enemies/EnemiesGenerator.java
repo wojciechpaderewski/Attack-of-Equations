@@ -14,10 +14,11 @@ public class EnemiesGenerator {
     private GameObjects gameObjects;
     private GameMap gameMap;
     private Score score;
-    private int enemiesLimit = 10;
+    private int enemiesLimit = 13;
     private int maxSpeed = 5;
 
-    private int enemySpawnRate = 67;
+    private int enemySpawnRate = 60;
+    private int enemySpawnRateLimit = 30;
     private int ticks = 0;
 
     public EnemiesGenerator(GameObjects gameObjects, GameMap gameMap, Score powerLevel) {
@@ -43,6 +44,16 @@ public class EnemiesGenerator {
             speed = maxSpeed;
         }
         return -speed;
+    }
+
+    private int calcEnemySpawnRate() {
+        int powerLevel = this.score.getCurrentScore();
+        int spawnRate = enemySpawnRate - (int) (powerLevel / 1.7);
+        if (spawnRate < enemySpawnRateLimit) {
+            spawnRate = enemySpawnRateLimit;
+        }
+        System.out.println("SpawnRate: " + spawnRate);
+        return spawnRate;
     }
 
     private void generateEnemy(int y) {
@@ -93,8 +104,11 @@ public class EnemiesGenerator {
 
 
     private void generateEnemies() {
-        if (ticks == enemySpawnRate) {
-            if (gameObjects.getGameObjects().size() >= enemiesLimit) {
+        if (ticks >= calcEnemySpawnRate()) {
+            int allEnemies = gameObjects.getGameObjects().size() - 1;
+
+            if (allEnemies >= enemiesLimit) {
+                System.out.println("Enemies limit reached");
                 return;
             }
 
