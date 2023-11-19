@@ -10,6 +10,7 @@ import States.GameStates;
 import States.State;
 import ui.Button;
 import ui.GameMap;
+import ui.MenuButton;
 import ui.PlayerLives;
 import ui.Score;
 
@@ -24,7 +25,7 @@ public class Game {
     private Player player;
     private EnemiesGenerator enemiesGenerator;
     private EnemiesDestroyer enemiesDestroyer;
-    private Button menuButton;
+    private MenuButton menuButton;
 
     public Game(int windowWidth,int windowHeight, State state,KeyInputHandler keyInputHandler, MouseHandler mouseHandler, Score score) {
         this.state = state;
@@ -44,11 +45,9 @@ public class Game {
     }
 
     private void initMenuButton () {
-        menuButton = new Button(mouseHandler);
-        menuButton.text = "Menu";
-        int offset = 100;
-        menuButton.x = gameMap.getWidth() - menuButton.width / 2 - offset;
-        menuButton.y = gameMap.getHeight() - menuButton.height / 2 - offset;
+        menuButton = new MenuButton(mouseHandler);
+        menuButton.x = gameMap.getWidth() - menuButton.width / 2 - 80;
+        menuButton.y = gameMap.getHeight() - menuButton.height / 2 - 100;
         menuButton.onClick = (Void) -> {
             state.set(GameStates.MENU);
             return null;
