@@ -2,6 +2,8 @@ package GameObjects.Enemies;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 import Equations.Equation;
 import GameObjects.Texture;
@@ -9,15 +11,26 @@ import GameObjects.Texture;
 public class EnemyTexture implements Texture {
     private Rectangle rect;
     private int width, height;
-    private Color color;
     private Equation equation;
+    private BufferedImage enemyImg;
 
     EnemyTexture(Rectangle rect, Equation equation) {
         this.rect = rect;
-        this.color = Color.GREEN;
         this.width = (int) rect.getWidth();
         this.height = (int) rect.getHeight();
         this.equation = equation;
+        this.enemyImg = importImg();
+    }
+
+    private BufferedImage importImg() {
+        InputStream is = getClass().getResourceAsStream("../../assets/enemy.png");
+        try {
+            BufferedImage img = javax.imageio.ImageIO.read(is);
+            return img;
+        } catch (Exception e) {
+            System.out.println("Error importing map.png");
+            return null;
+        }
     }
 
     public void tick() {
@@ -25,15 +38,14 @@ public class EnemyTexture implements Texture {
     }
 
     public void render(java.awt.Graphics graphics) {
-        graphics.setColor(color);
         int x = (int) rect.getX();
         int y = (int) rect.getY();
-        graphics.fillRect(x, y, width, height);
+        graphics.drawImage(enemyImg, x, y, null);
 
         graphics.setColor(Color.black);
         String equationString = equation.getEquationToRender();
 
-        graphics.setFont(graphics.getFont().deriveFont(15f));
+        graphics.setFont(graphics.getFont().deriveFont(16f));
         int stringWidth = graphics.getFontMetrics().stringWidth(equationString);
         int stringHeight = graphics.getFontMetrics().getHeight();
         graphics.drawString(equationString, x + width / 2 - stringWidth / 2, y + height / 2 + stringHeight / 3);

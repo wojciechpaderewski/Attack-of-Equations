@@ -1,5 +1,6 @@
 package ui.popups;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.function.Function;
 
@@ -41,7 +42,7 @@ public class Menu extends Popup {
         resumeButton = new Button(mouseHandler);
         resumeButton.text = "Resume";
         resumeButton.x = this.windowWidth / 2 - resumeButton.width / 2;
-        resumeButton.y = 420;
+        resumeButton.y = 450;
 
         resumeButton.onClick = (Void) -> {
             onResumeGame.apply(null);
@@ -55,6 +56,12 @@ public class Menu extends Popup {
 
     public void render(Graphics graphics) {
         super.render(graphics);
+        // draw menu string
+        graphics.setColor(Color.white);
+        graphics.setFont(graphics.getFont().deriveFont(40f));
+        int stringWidth = graphics.getFontMetrics().stringWidth("Menu");
+        graphics.drawString("Menu", this.windowWidth / 2 - stringWidth / 2, 220);
+
         quitButton.render(graphics);
         resumeButton.render(graphics);
     }

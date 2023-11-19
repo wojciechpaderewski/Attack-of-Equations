@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 import States.GameStates;
 import States.State;
@@ -10,26 +12,41 @@ public class PlayerLives {
     private int maxLives = 3;
     private int currentLives = maxLives;
 
-    private int heartWidth = 20;
-    private int heartHeight = 20;
+    private int heartWidth = 25;
+    private int heartHeight = 25;
     private GameMap gameMap;
     private State state;
+    private BufferedImage heartImg;
 
     public PlayerLives(GameMap gameMap, State state) {
         this.gameMap = gameMap;
         this.state = state;
+        this.heartImg = importImg();
     }
+
+    
+    private BufferedImage importImg() {
+        InputStream is = getClass().getResourceAsStream("../assets/heart.png");
+        try {
+            BufferedImage img = javax.imageio.ImageIO.read(is);
+            return img;
+        } catch (Exception e) {
+            System.out.println("Error importing map.png");
+            return null;
+        }
+    }
+        
 
     public int getCurrentLives() { return currentLives; }
     public void decrementLives() { currentLives--; }
 
     public void renderLives(Graphics graphics) {
-        int x = gameMap.getWidth() - 100;
+        int x = gameMap.getWidth() - 130;
         int y = 10;
         int padding = 10;
 
         for (int i = 0; i < currentLives; i++) {
-            drawHeart(graphics, x, y);
+            graphics.drawImage(heartImg, x, y, heartWidth, heartHeight, null);
             x += heartWidth + padding;
         }
     }
@@ -42,18 +59,5 @@ public class PlayerLives {
         if (isGameOver()) {
             state.set(GameStates.GAME_OVER);
         }
-    }
-
-    private void drawHeart(Graphics graphics, int x, int y) {
-        graphics.setColor(Color.red);
-        graphics.fillOval(x, y, heartWidth / 2, heartHeight / 2);
-        graphics.fillOval(x + heartWidth / 2, y, heartWidth / 2, heartHeight / 2);
-        graphics.fillRect(x + heartWidth / 4, y + heartHeight / 4, heartWidth / 2, heartHeight / 2);
-
-        // draw outline
-        graphics.setColor(Color.black);
-        graphics.drawOval(x, y, heartWidth / 2, heartHeight / 2);
-        graphics.drawOval(x + heartWidth / 2, y, heartWidth / 2, heartHeight / 2);
-        graphics.drawRect(x + heartWidth / 4, y + heartHeight / 4, heartWidth / 2, heartHeight / 2);
     }
 }

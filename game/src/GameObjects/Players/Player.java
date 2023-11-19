@@ -3,6 +3,8 @@ package GameObjects.Players;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 import Equations.Equation;
 import GameObjects.GameObject;
@@ -14,10 +16,11 @@ import ui.Score;
 
 
 public class Player extends GameObject {
-    static int startX = 0, startY = 0;
+    static int startX = 10, startY = 512;
+    static int width = 50, height = 50;
     private KeyInputHandler keyInputHandler;
     private GameMap gameMap;
-    private static Rectangle rect = new Rectangle(startX, startY, 50, 50);
+    private static Rectangle rect = new Rectangle(startX, startY, width, height);
     private PlayerLives playerLives;
     private Score score;
     private PlayerTexture texture;
@@ -25,6 +28,7 @@ public class Player extends GameObject {
 
     public Player( KeyInputHandler keyInputHandler, GameMap gameMap, PlayerLives playerLives, Score powerLevel) {
         super(rect);
+        rect.y = gameMap.getHeight() / 2 - height /2;
         this.keyInputHandler = keyInputHandler;
         this.gameMap = gameMap;
         this.playerLives = playerLives;
