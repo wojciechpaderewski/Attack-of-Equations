@@ -10,7 +10,7 @@ import States.State;
 
 
 public class Score {
-    private int scoreLimit = 100;
+    public int scoreLimit = 100;
     private int startingScore = 10;
     private int currentScore = startingScore;
     private State state;

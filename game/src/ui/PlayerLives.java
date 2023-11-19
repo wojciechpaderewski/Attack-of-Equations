@@ -9,7 +9,7 @@ import States.GameStates;
 import States.State;
 
 public class PlayerLives {
-    private int maxLives = 3;
+    public int maxLives = 3;
     private int currentLives = maxLives;
 
     private int heartWidth = 25;

@@ -49,8 +49,11 @@ public class Game {
         menuButton.x = gameMap.getWidth() - menuButton.width / 2 - 80;
         menuButton.y = gameMap.getHeight() - menuButton.height / 2 - 100;
         menuButton.onClick = (Void) -> {
-            state.set(GameStates.MENU);
-            return null;
+            if (state.get() == GameStates.GAME) {
+                state.set(GameStates.MENU);
+            } {
+                return null;
+            }
         };
     }
 

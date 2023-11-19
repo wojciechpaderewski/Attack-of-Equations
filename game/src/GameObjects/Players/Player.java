@@ -14,7 +14,6 @@ import ui.GameMap;
 import ui.PlayerLives;
 import ui.Score;
 
-
 public class Player extends GameObject {
     static int startX = 10, startY = 512;
     static int width = 50, height = 50;
@@ -24,7 +23,7 @@ public class Player extends GameObject {
     private PlayerLives playerLives;
     private Score score;
     private PlayerTexture texture;
-    private int playerSpeed = 7;
+    private int playerSpeed = 6;
 
     public Player( KeyInputHandler keyInputHandler, GameMap gameMap, PlayerLives playerLives, Score powerLevel) {
         super(rect);
@@ -105,5 +104,4 @@ public class Player extends GameObject {
             this.velX = 0;
         }
     }
-
 }

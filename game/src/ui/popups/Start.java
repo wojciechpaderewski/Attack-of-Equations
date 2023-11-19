@@ -18,6 +18,7 @@ public class Start extends Popup {
 
     private Button quitButton;
     private Button startButton;
+    private Button instructionButton;
 
     public Start(int windowWidth, int windowHeight, MouseHandler mouseHandler, State state) {
         super(windowWidth, windowHeight);
@@ -28,6 +29,7 @@ public class Start extends Popup {
 
         initQuitButton();
         initStartButton();
+        initInstructionButton();
     }
 
     private void initQuitButton() {
@@ -35,10 +37,14 @@ public class Start extends Popup {
         quitButton.text = "Quit";
         quitButton.width = buttonWidth;
         quitButton.x = this.windowWidth / 2 - quitButton.width / 2;
-        quitButton.y = 500;
+        quitButton.y = 550;
         quitButton.onClick = (Void) -> {
-            onQuitGame.apply(null);
-            return null;
+            if (state.get() == States.GameStates.START) {
+                System.exit(0);
+                return null;
+            } else {
+                return null;
+            }
         };
     }
 
@@ -50,12 +56,32 @@ public class Start extends Popup {
         startButton.y = 350;
 
         startButton.onClick = (Void) -> {
-            onStartGame.apply(null);
-            return null;
+            if (state.get() == States.GameStates.START) {
+                onStartGame.apply(null);
+                return null;
+            } else {
+                return null;
+            }
         };
     }
 
-    public Function<Void, Void> onQuitGame;
+    private void initInstructionButton() {
+        instructionButton = new Button(mouseHandler);
+        instructionButton.text = "Instruction";
+        instructionButton.width = buttonWidth;
+        instructionButton.x = this.windowWidth / 2 - instructionButton.width / 2;
+        instructionButton.y = 450;
+
+        instructionButton.onClick = (Void) -> {
+            if (state.get() == States.GameStates.START) {
+                state.set(States.GameStates.INSTRUCTION);
+                return null;
+            } else {
+                return null;
+            }
+        };
+    }
+
     public Function<Void, Void> onStartGame;
 
     private void renderTitle(Graphics graphics) {
@@ -71,5 +97,6 @@ public class Start extends Popup {
         renderTitle(graphics);
         startButton.render(graphics);
         quitButton.render(graphics);
+        instructionButton.render(graphics);
     }
 }

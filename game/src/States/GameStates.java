@@ -5,5 +5,6 @@ public enum GameStates {
     MENU,
     GAME,
     GAME_OVER,
-    GAME_WON
+    GAME_WON,
+    INSTRUCTION
 }

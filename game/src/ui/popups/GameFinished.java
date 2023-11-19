@@ -14,17 +14,18 @@ public class GameFinished extends Popup {
     private MouseHandler mouseHandler;
     private int buttonWidth = 200;
     
-    public Function<Void, Void> onQuitGame;
     public Function<Void, Void> onRestartGame;
 
     private Button quitButton;
     private Button restartButton;
+    private State state;
 
     public GameFinished(int windowWidth, int windowHeight, Score score, MouseHandler mouseHandler, State state, String title) {
         super(windowWidth, windowHeight);
         this.score = score;
         this.title = title;
         this.mouseHandler = mouseHandler;
+        this.state = state;
 
         initQuitButton();
         initRestartButton();
@@ -37,8 +38,12 @@ public class GameFinished extends Popup {
         quitButton.x = this.windowWidth / 2 - quitButton.width / 2;
         quitButton.y = 500;
         quitButton.onClick = (Void) -> {
-            onQuitGame.apply(null);
-            return null;
+            if (state.get() == States.GameStates.GAME_WON || state.get() == States.GameStates.GAME_OVER) {
+                System.exit(0);
+                return null;
+            } else {
+                return null;
+            }
         };
     }
 
@@ -50,8 +55,12 @@ public class GameFinished extends Popup {
         restartButton.y = 400;
 
         restartButton.onClick = (Void) -> {
-            onRestartGame.apply(null);
-            return null;
+            if (state.get() == States.GameStates.GAME_WON || state.get() == States.GameStates.GAME_OVER) {
+                onRestartGame.apply(null);
+                return null;
+            } else {
+                return null;
+            }
         };
     }
 
