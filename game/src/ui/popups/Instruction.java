@@ -35,10 +35,8 @@ public class Instruction extends Popup {
         goBackButton.onClick = (Void) -> {
             if (state.get() == States.GameStates.INSTRUCTION) {
                 state.set(state.getPrevious());
-                return null;
-            } else {
-                return null;
             }
+            return null;
         };
     }
 
