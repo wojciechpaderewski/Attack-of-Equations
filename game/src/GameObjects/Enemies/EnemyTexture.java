@@ -45,7 +45,7 @@ public class EnemyTexture implements Texture {
         graphics.setColor(Color.black);
         String equationString = equation.getEquationToRender();
 
-        graphics.setFont(graphics.getFont().deriveFont(16f));
+        graphics.setFont(graphics.getFont().deriveFont(18f));
         int stringWidth = graphics.getFontMetrics().stringWidth(equationString);
         int stringHeight = graphics.getFontMetrics().getHeight();
         graphics.drawString(equationString, x + width / 2 - stringWidth / 2, y + height / 2 + stringHeight / 3);

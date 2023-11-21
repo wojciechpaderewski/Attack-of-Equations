@@ -20,7 +20,7 @@ public class Instruction extends Popup {
         this.state = state;
         this.mouseHandler = mouseHandler;
         this.score = score;
-        this.width = 650;
+        this.width = 680;
         this.height = 600;
 
         initGoBackButton();
